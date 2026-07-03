@@ -55,23 +55,23 @@
 
         <!-- HEADER SECTION -->
         <div class="mb-8 text-center">
-            <div class="inline-block bg-yellow-100 p-4 rounded-full mb-4">
-                <i class="fas fa-edit text-yellow-600 text-4xl"></i>
+            <div class="inline-block bg-green-100 p-4 rounded-full mb-4">
+                <i class="fas fa-edit text-green-600 text-4xl"></i>
             </div>
             <h2 class="text-3xl font-bold text-emerald-900 mb-2">Edit Data Lahan Perhutanan</h2>
             <p class="text-gray-600">Perbarui informasi lahan hutan: <span class="font-bold text-emerald-700">{{ $lahan->nama_lahan }}</span></p>
         </div>
 
         <!-- FORM CARD -->
-        <div class="bg-white rounded-xl shadow-2xl overflow-hidden border-t-4 border-yellow-500">
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden border-t-4 border-green-500">
             
             <!-- Card Header -->
-            <div class="bg-gradient-to-r from-yellow-500 to-orange-500 px-8 py-6">
+            <div class="bg-gradient-to-r from-green-500 to-emerald-500 px-8 py-6">
                 <h3 class="text-xl font-bold text-white flex items-center space-x-2">
                     <i class="fas fa-pencil-alt"></i>
                     <span>Form Edit Data Lahan</span>
                 </h3>
-                <p class="text-yellow-100 text-sm mt-1">ID Lahan: #{{ $lahan->id }} | Terakhir diupdate: {{ $lahan->updated_at->format('d/m/Y H:i') }}</p>
+                <p class="text-green-100 text-sm mt-1">ID Lahan: #{{ $lahan->id }} | Terakhir diupdate: {{ $lahan->updated_at->format('d/m/Y H:i') }}</p>
             </div>
 
             <!-- Card Body -->
@@ -95,7 +95,7 @@
                             id="nama_lahan" 
                             value="{{ old('nama_lahan', $lahan->nama_lahan) }}"
                             placeholder="Contoh: Blok Jati A1, Kawasan Mahoni Timur, dll"
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-yellow-200 focus:border-yellow-500 transition duration-200 text-gray-900 placeholder-gray-400 @error('nama_lahan') border-red-500 @enderror"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-green-200 focus:border-green-500 transition duration-200 text-gray-900 placeholder-gray-400 @error('nama_lahan') border-red-500 @enderror"
                         >
                         @error('nama_lahan')
                             <div class="mt-2 bg-red-50 border-l-4 border-red-500 p-3 rounded">
@@ -130,7 +130,7 @@
                                 id="luas_hektar" 
                                 value="{{ old('luas_hektar', $lahan->luas_hektar) }}"
                                 placeholder="Contoh: 25.50"
-                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-yellow-200 focus:border-yellow-500 transition duration-200 text-gray-900 placeholder-gray-400 @error('luas_hektar') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-green-200 focus:border-green-500 transition duration-200 text-gray-900 placeholder-gray-400 @error('luas_hektar') border-red-500 @enderror"
                             >
                             <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
                                 <span class="text-gray-500 font-semibold">Ha</span>
@@ -163,7 +163,7 @@
                         <select 
                             name="status" 
                             id="status"
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-yellow-200 focus:border-yellow-500 transition duration-200 text-gray-900 @error('status') border-red-500 @enderror"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-green-200 focus:border-green-500 transition duration-200 text-gray-900 @error('status') border-red-500 @enderror"
                         >
                             <option value="" disabled>-- Pilih Status Lahan --</option>
                             <option value="Produksi" {{ old('status', $lahan->status) == 'Produksi' ? 'selected' : '' }}>
@@ -201,12 +201,12 @@
                     </div>
 
                     <!-- Info Box -->
-                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-lg">
                         <div class="flex items-start space-x-3">
-                            <i class="fas fa-exclamation-triangle text-yellow-600 text-xl mt-1"></i>
+                            <i class="fas fa-exclamation-triangle text-green-600 text-xl mt-1"></i>
                             <div>
-                                <p class="text-sm font-semibold text-yellow-900">Perhatian Saat Edit Data:</p>
-                                <ul class="text-xs text-yellow-800 mt-2 space-y-1 list-disc list-inside">
+                                <p class="text-sm font-semibold text-green-900">Perhatian Saat Edit Data:</p>
+                                <ul class="text-xs text-green-800 mt-2 space-y-1 list-disc list-inside">
                                     <li>Pastikan data yang diubah sudah benar sebelum menyimpan</li>
                                     <li>Perubahan data akan langsung tersimpan ke database</li>
                                     <li>Riwayat perubahan akan tercatat di timestamp updated_at</li>
@@ -254,7 +254,7 @@
                         </a>
                         <button 
                             type="submit" 
-                            class="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold rounded-lg transition duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl"
+                            class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold rounded-lg transition duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl"
                         >
                             <i class="fas fa-save"></i>
                             <span>Update Data Lahan</span>

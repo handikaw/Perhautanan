@@ -48,8 +48,8 @@
 
         <!-- HEADER SECTION -->
         <div class="mb-8 text-center">
-            <div class="inline-block bg-blue-100 p-4 rounded-full mb-4">
-                <i class="fas fa-user-edit text-blue-600 text-4xl"></i>
+            <div class="inline-block bg-green-100 p-4 rounded-full mb-4">
+                <i class="fas fa-user-edit text-green-600 text-4xl"></i>
             </div>
             <h2 class="text-3xl font-bold text-emerald-900 mb-2">Edit Profil Pengguna</h2>
             <p class="text-gray-600">Perbarui informasi akun Anda</p>
@@ -67,15 +67,15 @@
         @endif
 
         <!-- PROFILE FORM CARD -->
-        <div class="bg-white rounded-xl shadow-2xl overflow-hidden border-t-4 border-blue-500 mb-6">
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden border-t-4 border-green-500 mb-6">
             
             <!-- Card Header -->
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6">
+            <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-8 py-6">
                 <h3 class="text-xl font-bold text-white flex items-center space-x-2">
                     <i class="fas fa-id-card"></i>
                     <span>Informasi Profil</span>
                 </h3>
-                <p class="text-blue-100 text-sm mt-1">Update nama dan email Anda</p>
+                <p class="text-green-100 text-sm mt-1">Update nama dan email Anda</p>
             </div>
 
             <!-- Card Body -->
@@ -86,38 +86,10 @@
                     @csrf
                     @method('PATCH')
 
-                    <!-- Profile Photo -->
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2 flex items-center space-x-2">
-                            <i class="fas fa-camera text-blue-600"></i>
-                            <span>Foto Profil</span>
-                        </label>
-                        <div class="flex items-center space-x-4">
-                            <div class="flex-shrink-0">
-                                @if($user->profile_photo)
-                                    <img src="{{ asset('storage/' . $user->profile_photo) }}" alt="Profile Photo" class="h-20 w-20 rounded-full object-cover border-4 border-blue-500">
-                                @else
-                                    <div class="h-20 w-20 rounded-full bg-gray-200 flex items-center justify-center border-4 border-gray-300">
-                                        <i class="fas fa-user text-gray-400 text-3xl"></i>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="flex-1">
-                                <input 
-                                    type="file" 
-                                    name="profile_photo" 
-                                    accept="image/jpeg,image/png,image/jpg"
-                                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition duration-200 text-gray-900"
-                                >
-                                <p class="text-xs text-gray-500 mt-2">Format: JPG, PNG (Max 2MB)</p>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Name -->
                     <div>
                         <label for="name" class="block text-sm font-bold text-gray-700 mb-2 flex items-center space-x-2">
-                            <i class="fas fa-user text-blue-600"></i>
+                            <i class="fas fa-user text-green-600"></i>
                             <span>Nama Lengkap</span>
                         </label>
                         <input 
@@ -127,7 +99,7 @@
                             value="{{ old('name', $user->name) }}"
                             required 
                             autofocus
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition duration-200 text-gray-900 @error('name') border-red-500 @enderror"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-green-200 focus:border-green-500 transition duration-200 text-gray-900 @error('name') border-red-500 @enderror"
                         >
                         @error('name')
                             <div class="mt-2 bg-red-50 border-l-4 border-red-500 p-2 rounded">
@@ -142,7 +114,7 @@
                     <!-- Email -->
                     <div>
                         <label for="email" class="block text-sm font-bold text-gray-700 mb-2 flex items-center space-x-2">
-                            <i class="fas fa-envelope text-blue-600"></i>
+                            <i class="fas fa-envelope text-green-600"></i>
                             <span>Email Address</span>
                         </label>
                         <input 
@@ -151,7 +123,7 @@
                             name="email" 
                             value="{{ old('email', $user->email) }}"
                             required
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition duration-200 text-gray-900 @error('email') border-red-500 @enderror"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-green-200 focus:border-green-500 transition duration-200 text-gray-900 @error('email') border-red-500 @enderror"
                         >
                         @error('email')
                             <div class="mt-2 bg-red-50 border-l-4 border-red-500 p-2 rounded">
@@ -174,7 +146,7 @@
                         </a>
                         <button 
                             type="submit" 
-                            class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-lg transition duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl"
+                            class="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold rounded-lg transition duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl"
                         >
                             <i class="fas fa-save"></i>
                             <span>Simpan Perubahan</span>
@@ -188,15 +160,15 @@
         </div>
 
         <!-- PASSWORD UPDATE CARD -->
-        <div class="bg-white rounded-xl shadow-2xl overflow-hidden border-t-4 border-yellow-500 mb-6">
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden border-t-4 border-green-500 mb-6">
             
             <!-- Card Header -->
-            <div class="bg-gradient-to-r from-yellow-500 to-orange-500 px-8 py-6">
+            <div class="bg-gradient-to-r from-green-500 to-emerald-500 px-8 py-6">
                 <h3 class="text-xl font-bold text-white flex items-center space-x-2">
                     <i class="fas fa-key"></i>
                     <span>Update Password</span>
                 </h3>
-                <p class="text-yellow-100 text-sm mt-1">Ganti password untuk keamanan akun</p>
+                <p class="text-green-100 text-sm mt-1">Ganti password untuk keamanan akun</p>
             </div>
 
             <!-- Card Body -->
@@ -210,7 +182,7 @@
                     <!-- Current Password -->
                     <div>
                         <label for="current_password" class="block text-sm font-bold text-gray-700 mb-2 flex items-center space-x-2">
-                            <i class="fas fa-lock text-yellow-600"></i>
+                            <i class="fas fa-lock text-green-600"></i>
                             <span>Password Saat Ini</span>
                         </label>
                         <input 
@@ -218,7 +190,7 @@
                             type="password" 
                             name="current_password" 
                             required
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-yellow-200 focus:border-yellow-500 transition duration-200 text-gray-900 @error('current_password', 'updatePassword') border-red-500 @enderror"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-green-200 focus:border-green-500 transition duration-200 text-gray-900 @error('current_password', 'updatePassword') border-red-500 @enderror"
                         >
                         @error('current_password', 'updatePassword')
                             <div class="mt-2 bg-red-50 border-l-4 border-red-500 p-2 rounded">
@@ -233,7 +205,7 @@
                     <!-- New Password -->
                     <div>
                         <label for="password" class="block text-sm font-bold text-gray-700 mb-2 flex items-center space-x-2">
-                            <i class="fas fa-lock text-yellow-600"></i>
+                            <i class="fas fa-lock text-green-600"></i>
                             <span>Password Baru</span>
                         </label>
                         <input 
@@ -241,7 +213,7 @@
                             type="password" 
                             name="password" 
                             required
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-yellow-200 focus:border-yellow-500 transition duration-200 text-gray-900 @error('password', 'updatePassword') border-red-500 @enderror"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-green-200 focus:border-green-500 transition duration-200 text-gray-900 @error('password', 'updatePassword') border-red-500 @enderror"
                         >
                         @error('password', 'updatePassword')
                             <div class="mt-2 bg-red-50 border-l-4 border-red-500 p-2 rounded">
@@ -256,7 +228,7 @@
                     <!-- Confirm Password -->
                     <div>
                         <label for="password_confirmation" class="block text-sm font-bold text-gray-700 mb-2 flex items-center space-x-2">
-                            <i class="fas fa-lock text-yellow-600"></i>
+                            <i class="fas fa-lock text-green-600"></i>
                             <span>Konfirmasi Password Baru</span>
                         </label>
                         <input 
@@ -264,17 +236,17 @@
                             type="password" 
                             name="password_confirmation" 
                             required
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-yellow-200 focus:border-yellow-500 transition duration-200 text-gray-900"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-green-200 focus:border-green-500 transition duration-200 text-gray-900"
                         >
                     </div>
 
                     <!-- Info Box -->
-                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-lg">
                         <div class="flex items-start space-x-3">
-                            <i class="fas fa-shield-alt text-yellow-600 text-xl mt-1"></i>
+                            <i class="fas fa-shield-alt text-green-600 text-xl mt-1"></i>
                             <div>
-                                <p class="text-sm font-semibold text-yellow-900">Tips Keamanan Password:</p>
-                                <ul class="text-xs text-yellow-800 mt-2 space-y-1 list-disc list-inside">
+                                <p class="text-sm font-semibold text-green-900">Tips Keamanan Password:</p>
+                                <ul class="text-xs text-green-800 mt-2 space-y-1 list-disc list-inside">
                                     <li>Gunakan minimal 8 karakter</li>
                                     <li>Kombinasikan huruf besar, kecil, angka, dan simbol</li>
                                     <li>Jangan gunakan password yang mudah ditebak</li>
@@ -287,7 +259,7 @@
                     <div class="flex items-center justify-end space-x-4 pt-6 border-t-2 border-gray-200">
                         <button 
                             type="submit" 
-                            class="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold rounded-lg transition duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl"
+                            class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold rounded-lg transition duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl"
                         >
                             <i class="fas fa-key"></i>
                             <span>Update Password</span>
