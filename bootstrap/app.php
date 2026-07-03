@@ -12,9 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies(at: '*');
-        $middleware->alias([
-            'auth' => \App\Http\Middleware\Authenticate::class,
-        ]);
+        
+        // Bagian alias manual kita hapus agar Laravel menggunakan sistem internalnya yang bawaan aman
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
