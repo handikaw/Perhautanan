@@ -137,13 +137,13 @@
                 <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-500 hover:shadow-xl transition duration-200">
                     <h4 class="text-lg font-bold text-emerald-900 mb-4 flex items-center">
                         <i class="fas fa-chart-pie text-emerald-600 mr-2"></i>
-                        Distribusi Jumlah Lahan
+                        Distribusi Luas Lahan (Ha)
                     </h4>
                     <div class="relative" style="height: 300px;">
                         <canvas id="pieChart"></canvas>
                     </div>
                     <div class="mt-4 text-center">
-                        <p class="text-sm text-gray-500">Total: <span id="pieTotal" class="font-bold text-emerald-700">0</span> Lahan</p>
+                        <p class="text-sm text-gray-500">Total Luas: <span id="pieTotal" class="font-bold text-emerald-700">0</span> Ha</p>
                     </div>
                 </div>
 
@@ -416,8 +416,9 @@
                 statusLuas[land.status] += parseFloat(land.luas_hektar);
             });
             
-            document.getElementById('pieTotal').textContent = data.length;
-            document.getElementById('barTotal').textContent = (statusLuas.Konservasi + statusLuas.Produksi + statusLuas.Reboisasi).toFixed(2);
+            const totalLuas = statusLuas.Konservasi + statusLuas.Produksi + statusLuas.Reboisasi;
+            document.getElementById('pieTotal').textContent = totalLuas.toFixed(2);
+            document.getElementById('barTotal').textContent = totalLuas.toFixed(2);
             
             const pieCtx = document.getElementById('pieChart').getContext('2d');
             if (pieChart) pieChart.destroy();
@@ -426,7 +427,7 @@
                 data: {
                     labels: ['Konservasi', 'Produksi', 'Reboisasi'],
                     datasets: [{
-                        data: [statusCounts.Konservasi, statusCounts.Produksi, statusCounts.Reboisasi],
+                        data: [statusLuas.Konservasi, statusLuas.Produksi, statusLuas.Reboisasi],
                         backgroundColor: ['#22c55e', '#3b82f6', '#eab308'],
                         borderWidth: 3,
                         borderColor: '#fff'
@@ -446,7 +447,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return context.label + ': ' + context.parsed + ' lahan';
+                                    return context.label + ': ' + context.parsed.toFixed(2) + ' Ha';
                                 }
                             }
                         }
