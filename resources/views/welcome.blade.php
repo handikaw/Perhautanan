@@ -18,7 +18,7 @@
                         <i class="fas fa-tree text-white text-2xl"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold bg-gradient-to-r from-emerald-700 to-green-600 bg-clip-text text-transparent">SaaS Perhutanan</h1>
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-emerald-700 to-green-600 bg-clip-text text-transparent">Perhutani</h1>
                         <p class="text-xs text-gray-500">Sistem Monitoring Lahan & Hasil Hutan</p>
                     </div>
                 </div>
