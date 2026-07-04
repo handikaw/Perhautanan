@@ -23,7 +23,19 @@
                         <p class="text-xs text-gray-500">Monitoring Lahan & Hasil Hutan</p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
+                
+                <!-- Mobile menu button (hidden on desktop) -->
+                <button 
+                    id="mobileMenuBtn" 
+                    class="md:hidden p-2 rounded-lg text-emerald-600 hover:bg-emerald-50 transition"
+                    onclick="toggleMobileMenu()"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                
+                <div class="hidden md:flex items-center space-x-4">
                     <a href="{{ route('forest.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200 shadow-md hover:shadow-lg flex items-center space-x-2">
                         <i class="fas fa-plus-circle"></i>
                         <span>Tambah Lahan</span>
@@ -50,6 +62,45 @@
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu Dropdown (hidden by default) -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white shadow-lg border-b-2 border-emerald-500">
+        <div class="max-w-7xl mx-auto px-4 py-4 space-y-3">
+            
+            <!-- Tambah Lahan Button -->
+            <a href="{{ route('forest.create') }}" class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-lg font-medium transition duration-200 text-center">
+                <i class="fas fa-plus-circle mr-2"></i>
+                Tambah Lahan
+            </a>
+            
+            <!-- Profile Section -->
+            <div class="border-t border-gray-200 pt-3">
+                <div class="flex items-center space-x-3 px-4 py-2">
+                    @if(Auth::check() && Auth::user()->profile_photo)
+                        <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile" class="h-12 w-12 rounded-full object-cover border-2 border-emerald-500">
+                    @else
+                        <i class="fas fa-user-circle text-4xl text-emerald-600"></i>
+                    @endif
+                    <div class="flex flex-col">
+                        <span class="font-medium text-gray-900">{{ Auth::check() ? Auth::user()->name : 'Admin User' }}</span>
+                        <a href="{{ route('profile.edit') }}" class="text-sm text-emerald-600 hover:text-emerald-800 transition">
+                            <i class="fas fa-edit mr-1"></i> Edit Profil
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Logout Button -->
+            <form method="POST" action="{{ route('logout') }}" class="border-t border-gray-200 pt-3">
+                @csrf
+                <button type="submit" class="block w-full bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg font-medium transition duration-200 text-center">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    Logout
+                </button>
+            </form>
+            
+        </div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -580,6 +631,26 @@
         }
         
         updateDisplay();
+    </script>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+            }
+        }
+        
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            
+            if (!mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
     </script>
 
 </body>
