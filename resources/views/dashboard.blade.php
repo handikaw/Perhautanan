@@ -6,6 +6,7 @@
     <title>Dashboard - SaaS Manajemen Perhutanan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
 </head>
 <body class="bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 min-h-screen">
 
@@ -124,6 +125,194 @@
             </div>
         </div>
 
+        <!-- FEATURE INFO CARDS SECTION -->
+        <div class="mb-8">
+            <h3 class="text-2xl font-bold text-emerald-900 mb-6 flex items-center">
+                <i class="fas fa-star text-yellow-500 mr-2"></i>
+                Fitur Unggulan Sistem
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Card 1: Monitoring Real-Time (Blue) -->
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border-2 border-blue-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="bg-blue-500 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                        <i class="fas fa-chart-line text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Monitoring Real-Time</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Pantau kondisi lahan hutan Anda secara langsung dengan dashboard interaktif dan data yang selalu update.
+                    </p>
+                </div>
+
+                <!-- Card 2: Manajemen Data (Green) -->
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border-2 border-green-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="bg-green-500 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                        <i class="fas fa-database text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Manajemen Data</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Kelola data lahan, hasil hutan, dan inventaris dengan sistem yang terorganisir dan mudah diakses.
+                    </p>
+                </div>
+
+                <!-- Card 3: Keamanan Terjamin (Yellow) -->
+                <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-6 border-2 border-yellow-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="bg-yellow-500 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Keamanan Terjamin</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Data Anda dilindungi dengan enkripsi tingkat enterprise dan backup otomatis setiap hari.
+                    </p>
+                </div>
+
+                <!-- Card 4: Akses Multi-Device (Purple) -->
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border-2 border-purple-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="bg-purple-500 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                        <i class="fas fa-mobile-alt text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Akses Multi-Device</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Akses sistem dari mana saja, kapan saja melalui desktop, tablet, atau smartphone Anda.
+                    </p>
+                </div>
+
+                <!-- Card 5: Laporan Otomatis (Red/Coral) -->
+                <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-6 border-2 border-red-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="bg-red-500 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                        <i class="fas fa-file-export text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Laporan Otomatis</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Generate laporan lengkap dan export data ke format Excel atau PDF dengan satu klik.
+                    </p>
+                </div>
+
+                <!-- Card 6: Multi-User (Indigo) -->
+                <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-2xl p-6 border-2 border-indigo-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="bg-indigo-500 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                        <i class="fas fa-users text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">Multi-User</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Kelola tim dengan role dan permission yang fleksibel untuk kolaborasi yang lebih baik.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- CHARTS ANALYTICS SECTION -->
+        <div class="mb-8">
+            <h3 class="text-2xl font-bold text-emerald-900 mb-6 flex items-center">
+                <i class="fas fa-chart-pie text-emerald-600 mr-2"></i>
+                Analisis Data Lahan
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Pie Chart Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-500 hover:shadow-xl transition duration-200">
+                    <h4 class="text-lg font-bold text-emerald-900 mb-4 flex items-center">
+                        <i class="fas fa-chart-pie text-emerald-600 mr-2"></i>
+                        Distribusi Jumlah Lahan
+                    </h4>
+                    <div class="relative" style="height: 300px;">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="text-sm text-gray-500">Total: <span id="pieTotal" class="font-bold text-emerald-700">0</span> Lahan</p>
+                    </div>
+                </div>
+
+                <!-- Bar Chart Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-green-500 hover:shadow-xl transition duration-200">
+                    <h4 class="text-lg font-bold text-emerald-900 mb-4 flex items-center">
+                        <i class="fas fa-chart-bar text-green-600 mr-2"></i>
+                        Total Luas per Status
+                    </h4>
+                    <div class="relative" style="height: 300px;">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="text-sm text-gray-500">Total Luas: <span id="barTotal" class="font-bold text-green-700">0</span> Ha</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FILTER & SEARCH SECTION -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-emerald-900 flex items-center">
+                    <i class="fas fa-filter text-emerald-600 mr-2"></i>
+                    Filter & Pencarian Data
+                </h3>
+                <button onclick="resetFilters()" class="text-sm text-gray-600 hover:text-emerald-600 transition flex items-center">
+                    <i class="fas fa-redo mr-1"></i>
+                    Reset
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                <!-- Search Box -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-search mr-1"></i> Cari Nama Lahan
+                    </label>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Ketik nama lahan..." 
+                        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-emerald-500 focus:outline-none transition"
+                    >
+                </div>
+                
+                <!-- Status Filter -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-tag mr-1"></i> Status Lahan
+                    </label>
+                    <select 
+                        id="statusFilter" 
+                        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-emerald-500 focus:outline-none transition"
+                    >
+                        <option value="all">Semua Status</option>
+                        <option value="Konservasi">Konservasi</option>
+                        <option value="Produksi">Produksi</option>
+                        <option value="Reboisasi">Reboisasi</option>
+                    </select>
+                </div>
+                
+                <!-- Size Filter -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-ruler-combined mr-1"></i> Ukuran Lahan
+                    </label>
+                    <select 
+                        id="sizeFilter" 
+                        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-emerald-500 focus:outline-none transition"
+                    >
+                        <option value="all">Semua Ukuran</option>
+                        <option value="small">Kecil (&lt; 10 Ha)</option>
+                        <option value="medium">Sedang (10-50 Ha)</option>
+                        <option value="large">Besar (&gt; 50 Ha)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Filter Results Info -->
+            <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                <div id="filterCount" class="text-sm text-gray-600">
+                    Menampilkan <span class="font-bold text-emerald-700">0</span> dari <span class="font-bold text-gray-700">0</span> lahan
+                </div>
+                <div class="flex items-center space-x-2 text-xs text-gray-500">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Filter otomatis saat Anda mengetik atau memilih</span>
+                </div>
+            </div>
+        </div>
+
         <!-- TABLE SECTION -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <!-- Table Header -->
@@ -165,7 +354,10 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($forestLands as $index => $land)
-                                <tr class="hover:bg-emerald-50 transition duration-150 cursor-pointer">
+                                <tr class="land-row hover:bg-emerald-50 transition duration-150 cursor-pointer" 
+                                    data-name="{{ strtolower($land->nama_lahan) }}"
+                                    data-status="{{ $land->status }}"
+                                    data-luas="{{ $land->luas_hektar }}">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10 bg-emerald-100 rounded-full flex items-center justify-center">
@@ -278,6 +470,193 @@
             animation: fade-in 0.5s ease-out;
         }
     </style>
+
+    <script>
+        const landsData = @json($forestLands);
+        
+        let pieChart, barChart;
+        
+        function initCharts(data) {
+            const statusCounts = {
+                'Konservasi': 0,
+                'Produksi': 0,
+                'Reboisasi': 0
+            };
+            const statusLuas = {
+                'Konservasi': 0,
+                'Produksi': 0,
+                'Reboisasi': 0
+            };
+            
+            data.forEach(land => {
+                statusCounts[land.status]++;
+                statusLuas[land.status] += parseFloat(land.luas_hektar);
+            });
+            
+            document.getElementById('pieTotal').textContent = data.length;
+            document.getElementById('barTotal').textContent = (statusLuas.Konservasi + statusLuas.Produksi + statusLuas.Reboisasi).toFixed(2);
+            
+            const pieCtx = document.getElementById('pieChart').getContext('2d');
+            if (pieChart) pieChart.destroy();
+            pieChart = new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Konservasi', 'Produksi', 'Reboisasi'],
+                    datasets: [{
+                        data: [statusCounts.Konservasi, statusCounts.Produksi, statusCounts.Reboisasi],
+                        backgroundColor: ['#22c55e', '#3b82f6', '#eab308'],
+                        borderWidth: 3,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: { size: 12, weight: 'bold' }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + ' lahan';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            if (barChart) barChart.destroy();
+            barChart = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Konservasi', 'Produksi', 'Reboisasi'],
+                    datasets: [{
+                        label: 'Total Luas (Ha)',
+                        data: [statusLuas.Konservasi, statusLuas.Produksi, statusLuas.Reboisasi],
+                        backgroundColor: ['#22c55e', '#3b82f6', '#eab308'],
+                        borderWidth: 2,
+                        borderColor: '#fff',
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Luas: ' + context.parsed.y.toFixed(2) + ' Ha';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toFixed(1) + ' Ha';
+                                }
+                            },
+                            title: { 
+                                display: true, 
+                                text: 'Luas (Hektar)',
+                                font: { weight: 'bold' }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { weight: 'bold' }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        initCharts(landsData);
+    </script>
+
+    <script>
+        let filteredData = [...landsData];
+        
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => applyFilters(), 300);
+        });
+        
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('sizeFilter').addEventListener('change', applyFilters);
+        
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const sizeFilter = document.getElementById('sizeFilter').value;
+            
+            filteredData = landsData.filter(land => {
+                const matchSearch = land.nama_lahan.toLowerCase().includes(searchTerm);
+                
+                const matchStatus = statusFilter === 'all' || land.status === statusFilter;
+                
+                let matchSize = true;
+                if (sizeFilter === 'small') matchSize = land.luas_hektar < 10;
+                else if (sizeFilter === 'medium') matchSize = land.luas_hektar >= 10 && land.luas_hektar <= 50;
+                else if (sizeFilter === 'large') matchSize = land.luas_hektar > 50;
+                
+                return matchSearch && matchStatus && matchSize;
+            });
+            
+            updateDisplay();
+        }
+        
+        function updateDisplay() {
+            document.querySelectorAll('.land-row').forEach(row => {
+                const name = row.dataset.name;
+                const status = row.dataset.status;
+                const luas = parseFloat(row.dataset.luas);
+                
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const statusFilter = document.getElementById('statusFilter').value;
+                const sizeFilter = document.getElementById('sizeFilter').value;
+                
+                let show = true;
+                if (searchTerm && !name.includes(searchTerm)) show = false;
+                if (statusFilter !== 'all' && status !== statusFilter) show = false;
+                if (sizeFilter === 'small' && luas >= 10) show = false;
+                if (sizeFilter === 'medium' && (luas < 10 || luas > 50)) show = false;
+                if (sizeFilter === 'large' && luas <= 50) show = false;
+                
+                row.style.display = show ? '' : 'none';
+            });
+            
+            const visibleCount = filteredData.length;
+            const totalCount = landsData.length;
+            document.getElementById('filterCount').innerHTML = 
+                `Menampilkan <span class="font-bold text-emerald-700">${visibleCount}</span> dari <span class="font-bold text-gray-700">${totalCount}</span> lahan`;
+            
+            initCharts(filteredData);
+        }
+        
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = 'all';
+            document.getElementById('sizeFilter').value = 'all';
+            filteredData = [...landsData];
+            updateDisplay();
+        }
+        
+        updateDisplay();
+    </script>
 
 </body>
 </html>
