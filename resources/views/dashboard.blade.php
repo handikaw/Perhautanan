@@ -312,83 +312,7 @@
                 <p class="text-gray-600">Distribusi kalkulasi luas lahan terdaftar berdasarkan parameter status wilayah</p>
             </div>
 
-        <!-- ================= HALAMAN 3: ANALISIS DATA LAHAN ================= -->
-        <section id="page-analisis" class="page-section hidden space-y-6">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h2 class="text-3xl font-bold text-emerald-900 mb-2">Analisis Visual Data Lahan</h2>
-                    <p class="text-gray-600">Distribusi kalkulasi luas lahan terdaftar berdasarkan parameter status wilayah</p>
-                </div>
-            </div>
-
-            <!-- LIVE FILTER FOR CHARTS (Sesuai gambar image_53064f.png) -->
-            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                <div class="flex justify-end mb-4">
-                    <button onclick="resetAnalisisFilters()" class="text-sm text-gray-500 hover:text-emerald-600 transition flex items-center bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg border border-gray-200">
-                        <i class="fas fa-redo mr-1.5 text-xs"></i> Reset
-                    </button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
-                            <i class="fas fa-search text-gray-400 mr-2"></i> Cari Nama Lahan
-                        </label>
-                        <input type="text" id="analisisSearchInput" placeholder="Ketik nama lahan..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
-                            <i class="fas fa-tag text-gray-400 mr-2"></i> Status Lahan
-                        </label>
-                        <select id="analisisStatusFilter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition">
-                            <option value="all">Semua Status</option>
-                            <option value="Konservasi">Konservasi</option>
-                            <option value="Produksi">Produksi</option>
-                            <option value="Reboisasi">Reboisasi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
-                            <i class="fas fa-ruler-combined text-gray-400 mr-2"></i> Ukuran Lahan
-                        </label>
-                        <select id="analisisSizeFilter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition">
-                            <option value="all">Semua Ukuran</option>
-                            <option value="small">Kecil (&lt; 10 Ha)</option>
-                            <option value="medium">Sedang (10-50 Ha)</option>
-                            <option value="large">Besar (&gt; 50 Ha)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CHARTS VISUALIZATION -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Pie Chart Card -->
-                <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-500">
-                    <h4 class="text-lg font-bold text-emerald-900 mb-4 flex items-center">
-                        <i class="fas fa-chart-pie text-emerald-600 mr-2"></i> Proporsi Distribusi Lahan (Ha)
-                    </h4>
-                    <div class="relative" style="height: 320px;">
-                        <canvas id="pieChart"></canvas>
-                    </div>
-                    <div class="mt-4 text-center bg-emerald-50 p-2 rounded-lg">
-                        <p class="text-sm text-gray-600">Akumulasi Total: <span id="pieTotal" class="font-bold text-emerald-700">0</span> Ha</p>
-                    </div>
-                </div>
-
-                <!-- Bar Chart Card -->
-                <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-green-500">
-                    <h4 class="text-lg font-bold text-emerald-900 mb-4 flex items-center">
-                        <i class="fas fa-chart-bar text-green-600 mr-2"></i> Perbandingan Luas Berdasarkan Status Pemanfaatan
-                    </h4>
-                    <div class="relative" style="height: 320px;">
-                        <canvas id="barChart"></canvas>
-                    </div>
-                    <div class="mt-4 text-center bg-green-50 p-2 rounded-lg">
-                        <p class="text-sm text-gray-600">Akumulasi Total: <span id="barTotal" class="font-bold text-green-700">0</span> Ha</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-500">
@@ -579,42 +503,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             initCharts(landsData);
         });
-
-        // ==========================================
-// LOGIKA FILTER DAN UPDATE GRAFIK REAL-TIME
-// ==========================================
-
-function applyAnalisisFilters() {
-    const searchTerm = document.getElementById('analisisSearchInput').value.toLowerCase();
-    const statusFilter = document.getElementById('analisisStatusFilter').value;
-    const sizeFilter = document.getElementById('analisisSizeFilter').value;
-
-    const filtered = landsData.filter(land => {
-        const matchSearch = land.nama_lahan.toLowerCase().includes(searchTerm);
-        const matchStatus = statusFilter === 'all' || land.status === statusFilter;
-        
-        let matchSize = true;
-        const luas = parseFloat(land.luas_hektar);
-        if (sizeFilter === 'small') matchSize = luas < 10;
-        else if (sizeFilter === 'medium') matchSize = luas >= 10 && luas <= 50;
-        else if (sizeFilter === 'large') matchSize = luas > 50;
-        
-        return matchSearch && matchStatus && matchSize;
-    });
-
-    initCharts(filtered);
-}
-
-function resetAnalisisFilters() {
-    document.getElementById('analisisSearchInput').value = '';
-    document.getElementById('analisisStatusFilter').value = 'all';
-    document.getElementById('analisisSizeFilter').value = 'all';
-    initCharts(landsData);
-}
-
-document.getElementById('analisisSearchInput').addEventListener('input', applyAnalisisFilters);
-document.getElementById('analisisStatusFilter').addEventListener('change', applyAnalisisFilters);
-document.getElementById('analisisSizeFilter').addEventListener('change', applyAnalisisFilters);
     </script>
 </body>
 </html>
