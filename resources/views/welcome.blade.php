@@ -187,35 +187,5 @@
                     </p>
                 </div>
 
-                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 hover:shadow-2xl transition duration-300 transform hover:-translate-y-2 border-2 border-purple-200">
-                    <div class="bg-purple-500 w-16 h-16 rounded-xl flex items-center justify-center mb-6 shadow-lg">
-                        <i class="fas fa-mobile-alt text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Akses Multi-Device</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Akses sistem dari mana saja, kapan saja melalui desktop, tablet, atau smartphone Anda.
-                    </p>
-                </div>
-
-                <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-8 hover:shadow-2xl transition duration-300 transform hover:-translate-y-2 border-2 border-red-200">
-                    <div class="bg-red-500 w-16 h-16 rounded-xl flex items-center justify-center mb-6 shadow-lg">
-                        <i class="fas fa-file-export text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Laporan Otomatis</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Generate laporan lengkap dan export data ke format Excel atau PDF dengan satu klik.
-                    </p>
-                </div>
-
-                <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-2xl p-8 hover:shadow-2xl transition duration-300 transform hover:-translate-y-2 border-2 border-indigo-200">
-                    <div class="bg-indigo-500 w-16 h-16 rounded-xl flex items-center justify-center mb-6 shadow-lg">
-                        <i class="fas fa-users text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Multi-User</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Kelola tim dengan role dan permission yang fleksibel untuk kolaborasi yang lebih baik.
-                    </p>
-                </div>
-            </div>
-        </div>
+               
     </section>
