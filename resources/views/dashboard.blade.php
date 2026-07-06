@@ -11,11 +11,11 @@
             theme: {
                 extend: {
                     colors: {
-                        canopy:  { 50:'#eef2ed', 100:'#d8e3d7', 300:'#7ea888', 500:'#3f7a5c', 600:'#2f6349', 700:'#234d38', 800:'#1f4d3d', 900:'#152e24' },
-                        bark:    { 100:'#efe6da', 300:'#c9ad8c', 500:'#8a6240', 600:'#6b4a32', 700:'#523823' },
-                        resin:   { 100:'#f7e6c4', 300:'#e6bc6e', 500:'#c88a2c', 600:'#a86f1e', 700:'#7d5314' },
+                        canopy:  { 50:'#e7f0e3', 100:'#d0dfc9', 300:'#6fa079', 500:'#346c4f', 600:'#2b5a41', 700:'#204634', 800:'#193628', 900:'#12281e' },
+                        bark:    { 100:'#ebe0d5', 300:'#bba07f', 500:'#7e573a', 600:'#63452d', 700:'#4b3522' },
+                        resin:   { 100:'#f5e4c4', 300:'#e1b46a', 500:'#c27d21', 600:'#a36618', 700:'#784a12' },
                         clay:    { 100:'#f3ded6', 500:'#b3462c', 600:'#93381f' },
-                        mist:    '#f1f4f0',
+                        mist:    '#eef2ed',
                         ink:     '#1c2621'
                     },
                     fontFamily: {
@@ -33,7 +33,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="bg-mist min-h-screen font-body text-ink">
+<body class="bg-canopy-50 min-h-screen font-body text-ink">
 
     <!-- ============ NAVBAR ============ -->
     <nav class="bg-canopy-900 shadow-lg sticky top-0 z-50 border-b-4 border-resin-500">
@@ -145,13 +145,13 @@
 
         <!-- ============ DASHBOARD PAGE ============ -->
         <section id="page-dashboard" class="page-section space-y-8">
-            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-100 pb-5">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-200 pb-5">
                 <div>
                     <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Ikhtisar Kawasan</p>
                     <h2 class="text-3xl font-display font-semibold text-canopy-900">Dashboard Lahan Perhutanan</h2>
                     <p class="text-gray-600 mt-1">Kelola dan pantau data lahan, kegiatan, serta hasil hutan secara terpadu</p>
                 </div>
-                <div class="text-sm text-canopy-700 flex items-center space-x-2 bg-white px-3 py-2 rounded-md shadow-sm border border-canopy-100">
+                <div class="text-sm text-canopy-700 flex items-center space-x-2 bg-white px-3 py-2 rounded-md shadow-sm border border-canopy-200">
                     <i class="fas fa-clock text-resin-500"></i>
                     <span id="liveClock" class="font-mono">-</span>
                 </div>
@@ -209,18 +209,18 @@
 
             <!-- Reminder + Recent activity widgets -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
+                <div class="bg-white rounded-lg shadow-md border border-canopy-200 overflow-hidden">
                     <div class="panel-header bg-clay-500"><i class="fas fa-bell"></i><span>Pengingat Perawatan &amp; Tindak Lanjut</span></div>
                     <div id="reminderList" class="divide-y divide-gray-100 max-h-72 overflow-y-auto"></div>
                 </div>
-                <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
+                <div class="bg-white rounded-lg shadow-md border border-canopy-200 overflow-hidden">
                     <div class="panel-header bg-canopy-700"><i class="fas fa-clock-rotate-left"></i><span>Aktivitas Terbaru</span></div>
                     <div id="recentActivityList" class="divide-y divide-gray-100 max-h-72 overflow-y-auto"></div>
                 </div>
             </div>
 
             <!-- Filter Card -->
-            <div class="filter-card bg-white rounded-lg shadow-md p-6 border border-canopy-100">
+            <div class="filter-card bg-white rounded-xl shadow-lg p-6 border border-canopy-200">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-display font-semibold text-canopy-900 flex items-center"><i class="fas fa-filter text-resin-500 mr-2"></i> Filter &amp; Pencarian</h3>
                     <button onclick="resetFilters()" class="text-sm text-gray-500 hover:text-canopy-700 transition flex items-center"><i class="fas fa-rotate-left mr-1"></i> Reset</button>
@@ -270,7 +270,7 @@
             </div>
 
             <!-- Table Card -->
-            <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
+            <div class="bg-white rounded-lg shadow-md border border-canopy-200 overflow-hidden">
                 <div class="panel-header bg-gradient-to-r from-canopy-800 to-canopy-600">
                     <div class="flex items-center space-x-2"><i class="fas fa-table"></i><span>Daftar Lahan Perhutanan</span></div>
                     <button onclick="switchPage('tambah-lahan')" class="ml-auto bg-resin-500 hover:bg-resin-600 text-canopy-900 px-3 py-1.5 rounded-md font-semibold text-xs shadow transition flex items-center space-x-1">
@@ -342,8 +342,8 @@
 
         <!-- ============ TAMBAH LAHAN PAGE ============ -->
         <section id="page-tambah-lahan" class="page-section hidden space-y-6">
-            <div class="flex items-center space-x-3 mb-2 border-b border-canopy-100 pb-5">
-                <button onclick="switchPage('dashboard')" class="p-2 bg-white rounded-md shadow border border-canopy-100 text-canopy-700 hover:bg-canopy-50"><i class="fas fa-arrow-left"></i></button>
+            <div class="flex items-center space-x-3 mb-2 border-b border-canopy-200 pb-5">
+                <button onclick="switchPage('dashboard')" class="p-2 bg-white rounded-md shadow border border-canopy-200 text-canopy-700 hover:bg-canopy-50"><i class="fas fa-arrow-left"></i></button>
                 <div>
                     <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Pendaftaran Blok Baru</p>
                     <h2 class="text-3xl font-display font-semibold text-canopy-900">Tambah Lahan Baru</h2>
@@ -420,7 +420,7 @@
                             </div>
                         </div>
 
-                        <div class="bg-canopy-50 border border-canopy-100 rounded-md p-4 text-xs text-canopy-700 flex items-start space-x-2">
+                        <div class="bg-canopy-50 border border-canopy-200 rounded-md p-4 text-xs text-canopy-700 flex items-start space-x-2">
                             <i class="fas fa-circle-info mt-0.5"></i>
                             <span>Data akan langsung tampil pada Dashboard dan grafik Analisis Lahan setelah disimpan. Field Penanggung Jawab, Koordinat, dan Keterangan memerlukan kolom tambahan pada tabel <code class="font-mono">forest_lands</code> di sisi server.</span>
                         </div>
@@ -470,7 +470,7 @@
 
         <!-- ============ KEGIATAN LAHAN PAGE (NEW) ============ -->
         <section id="page-kegiatan" class="page-section hidden space-y-6">
-            <div class="border-b border-canopy-100 pb-5">
+            <div class="border-b border-canopy-200 pb-5">
                 <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Buku Lapangan</p>
                 <h2 class="text-3xl font-display font-semibold text-canopy-900">Kegiatan &amp; Riwayat Lahan</h2>
                 <p class="text-gray-600 mt-1">Catat penanaman, pemeliharaan, penebangan, panen, dan inspeksi setiap blok lahan</p>
@@ -518,7 +518,7 @@
                 </div>
 
                 <div class="lg:col-span-2 space-y-4">
-                    <div class="bg-white rounded-lg shadow-md border border-canopy-100 p-4 flex flex-wrap gap-3 items-center">
+                    <div class="bg-white rounded-lg shadow-md border border-canopy-200 p-4 flex flex-wrap gap-3 items-center">
                         <select id="kFilterLahan" class="field-input !py-1.5 !w-auto text-sm" onchange="renderKegiatanList()"><option value="all">Semua Lahan</option></select>
                         <select id="kFilterJenis" class="field-input !py-1.5 !w-auto text-sm" onchange="renderKegiatanList()">
                             <option value="all">Semua Jenis</option>
@@ -532,7 +532,7 @@
                         <button onclick="exportKegiatanCSV()" class="btn-outline ml-auto"><i class="fas fa-file-csv"></i><span>Export CSV</span></button>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
+                    <div class="bg-white rounded-lg shadow-md border border-canopy-200 overflow-hidden">
                         <div class="panel-header bg-gradient-to-r from-canopy-800 to-canopy-600"><i class="fas fa-timeline"></i><span>Lini Masa Kegiatan</span></div>
                         <div id="kegiatanTimeline" class="divide-y divide-gray-100 max-h-[560px] overflow-y-auto"></div>
                         <div id="kegiatanEmpty" class="hidden text-center py-12">
@@ -546,7 +546,7 @@
 
         <!-- ============ PRODUKSI HASIL HUTAN PAGE (NEW) ============ -->
         <section id="page-produksi" class="page-section hidden space-y-6">
-            <div class="border-b border-canopy-100 pb-5">
+            <div class="border-b border-canopy-200 pb-5">
                 <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Buku Hasil Hutan</p>
                 <h2 class="text-3xl font-display font-semibold text-canopy-900">Produksi Hasil Hutan</h2>
                 <p class="text-gray-600 mt-1">Catat dan pantau hasil kayu, getah, dan komoditas hutan lainnya per lahan</p>
@@ -614,7 +614,7 @@
                         <div class="relative" style="height:280px;"><canvas id="produksiChart"></canvas></div>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
+                    <div class="bg-white rounded-lg shadow-md border border-canopy-200 overflow-hidden">
                         <div class="panel-header bg-gradient-to-r from-bark-600 to-bark-500">
                             <i class="fas fa-list"></i><span>Riwayat Produksi</span>
                             <button onclick="exportProduksiCSV()" class="ml-auto bg-white text-bark-700 hover:bg-bark-100 px-3 py-1.5 rounded-md font-semibold text-xs shadow transition flex items-center space-x-1"><i class="fas fa-file-csv"></i><span>Export</span></button>
@@ -644,7 +644,7 @@
 
         <!-- ============ ANALISIS PAGE ============ -->
         <section id="page-analisis" class="page-section hidden space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-100 pb-5">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-200 pb-5">
                 <div>
                     <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Telaah Data</p>
                     <h2 class="text-3xl font-display font-semibold text-canopy-900">Analisis Visual Data Lahan</h2>
@@ -680,7 +680,7 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-canopy-100">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-canopy-200">
                 <div class="panel-header bg-gradient-to-r from-canopy-800 to-canopy-600"><i class="fas fa-table-list"></i><span>Ringkasan Detail per Status</span></div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -762,7 +762,7 @@
         .field-label { @apply flex items-center text-sm font-medium text-gray-700 mb-2; }
         .field-input { @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-canopy-500 focus:border-canopy-500 focus:outline-none transition; }
 
-        .stat-card { @apply bg-white rounded-lg shadow-md p-5 border-t-4 hover:shadow-lg hover:-translate-y-0.5 transition duration-200; }
+        .stat-card { @apply bg-white rounded-xl shadow-lg p-5 border-t-4 hover:shadow-xl hover:-translate-y-0.5 transition duration-200; }
         .stat-label { @apply text-gray-500 text-[11px] font-semibold uppercase tracking-wide; }
         .stat-value { @apply text-3xl font-mono font-bold mt-1; }
         .stat-sub { @apply text-xs text-gray-400 mt-1; }
@@ -792,7 +792,7 @@
         .btn-outline-neutral { @apply bg-white border-2 border-gray-300 text-gray-600 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-semibold transition flex items-center space-x-1; }
         .status-quick-btn { @apply border-2 rounded-md p-3 text-left transition; }
 
-        .chart-card { @apply bg-white rounded-lg shadow-md p-6 border-t-4; }
+        .chart-card { @apply bg-white rounded-xl shadow-lg p-6 border-t-4; }
 
         #tableBody tr.hidden-row { display: none !important; }
         .page-num-btn.active-page { background-color: #2f6349; color: #fff; border-color: #2f6349; }
