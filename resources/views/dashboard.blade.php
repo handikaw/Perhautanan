@@ -214,7 +214,7 @@
             </div>
 
             <!-- Filter Card -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="filter-card bg-white rounded-xl shadow-lg p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-bold text-emerald-900 flex items-center">
                         <i class="fas fa-filter text-emerald-600 mr-2"></i> Filter &amp; Pencarian
@@ -264,7 +264,7 @@
                         <button onclick="exportCSV()" class="bg-white border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 px-3 py-2 rounded-lg text-sm font-semibold transition flex items-center space-x-1">
                             <i class="fas fa-file-csv"></i> <span>Export CSV</span>
                         </button>
-                        <button onclick="window.print()" class="bg-white border-2 border-gray-300 text-gray-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-semibold transition flex items-center space-x-1">
+                        <button onclick="printPage()" class="bg-white border-2 border-gray-300 text-gray-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-semibold transition flex items-center space-x-1">
                             <i class="fas fa-print"></i> <span>Cetak</span>
                         </button>
                     </div>
@@ -408,9 +408,14 @@
 
         <!-- ============ ANALISIS PAGE ============ -->
         <section id="page-analisis" class="page-section hidden space-y-6">
-            <div>
-                <h2 class="text-3xl font-bold text-emerald-900 mb-2">Analisis Visual Data Lahan</h2>
-                <p class="text-gray-600">Distribusi kalkulasi luas lahan terdaftar berdasarkan parameter status wilayah</p>
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                <div>
+                    <h2 class="text-3xl font-bold text-emerald-900 mb-2">Analisis Visual Data Lahan</h2>
+                    <p class="text-gray-600">Distribusi kalkulasi luas lahan terdaftar berdasarkan parameter status wilayah</p>
+                </div>
+                <button onclick="printPage()" class="no-print bg-white border-2 border-gray-300 text-gray-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-semibold transition flex items-center space-x-1 self-start">
+                    <i class="fas fa-print"></i> <span>Cetak Analisis</span>
+                </button>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -486,7 +491,23 @@
             border-color: #059669;
         }
         @media print {
-            nav, #mobileMenu, #statusChips, .no-print, #paginationControls, #tab-tambah-lahan { display: none !important; }
+            nav, #mobileMenu, #flashSuccess, #flashError, #liveClock,
+            .filter-card, #noResults, #paginationControls, #paginationInfo,
+            .delete-form, td:last-child, th:last-child, .sort-icon,
+            #searchInput, .relative i.fa-search {
+                display: none !important;
+            }
+
+            #statusChips { display: flex !important; }
+            .chip-btn { cursor: default !important; box-shadow: none !important; }
+
+            .page-section.hidden { display: none !important; }
+            .page-section:not(.hidden) { display: block !important; animation: none !important; }
+
+            body { background: #fff !important; }
+            .shadow-lg, .shadow, .shadow-md, .shadow-sm, .shadow-xl { box-shadow: none !important; }
+
+            canvas { max-width: 100% !important; }
         }
     </style>
 
@@ -712,6 +733,19 @@
             document.querySelectorAll('.sort-icon').forEach(icon => icon.className = 'fas fa-sort ml-1 text-gray-400 sort-icon');
             currentPage = 1;
             applyFilters();
+        }
+
+        // ---------- Print ----------
+        function printPage() {
+            // Jika halaman analisis sedang aktif, pastikan chart sudah ter-render ulang
+            // agar ukurannya pas sebelum dicetak (chart.js perlu sedikit delay setelah resize/layout).
+            const analisisVisible = !document.getElementById('page-analisis').classList.contains('hidden');
+            if (analisisVisible) {
+                initCharts(landsData);
+                setTimeout(() => window.print(), 300);
+            } else {
+                window.print();
+            }
         }
 
         // ---------- Export CSV ----------
