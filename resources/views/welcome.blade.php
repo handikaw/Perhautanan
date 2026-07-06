@@ -354,7 +354,7 @@
                     </div>
                     <p class="text-xs text-emerald-600 font-semibold mb-6 h-4" id="proBillingNote">&nbsp;</p>
 
-                    <a href="{{ route('register') }}" class="block text-center bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white px-6 py-3 rounded-lg font-bold shadow-lg transition mb-8">
+                    <a href="{{ route('subscription.checkout', ['plan' => 'pro', 'cycle' => 'monthly']) }}" class="block text-center bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white px-6 py-3 rounded-lg font-bold shadow-lg transition mb-8">
                         Coba Pro Sekarang
                     </a>
 
