@@ -11,12 +11,15 @@
             theme: {
                 extend: {
                     colors: {
-                        canopy:  { 50:'#eef2ed', 100:'#d8e3d7', 300:'#7ea888', 500:'#3f7a5c', 600:'#2f6349', 700:'#234d38', 800:'#1f4d3d', 900:'#152e24' },
-                        bark:    { 100:'#efe6da', 300:'#c9ad8c', 500:'#8a6240', 600:'#6b4a32', 700:'#523823' },
-                        resin:   { 100:'#f7e6c4', 300:'#e6bc6e', 500:'#c88a2c', 600:'#a86f1e', 700:'#7d5314' },
-                        clay:    { 100:'#f3ded6', 500:'#b3462c', 600:'#93381f' },
-                        mist:    '#f1f4f0',
-                        ink:     '#1c2621'
+                        /* Tema hijau menyeluruh: canopy = hijau utama, bark = hijau moss (pengganti coklat),
+                           resin = hijau lime/aksen (pengganti emas), clay = merah dipertahankan khusus
+                           untuk aksi bahaya/hapus & error demi kejelasan UX (konvensi universal). */
+                        canopy: { 50:'#eef2ed', 100:'#d8e3d7', 300:'#7ea888', 500:'#3f7a5c', 600:'#2f6349', 700:'#234d38', 800:'#1f4d3d', 900:'#152e24' },
+                        bark:   { 100:'#e7f0e3', 300:'#a9cba0', 500:'#5e8f57', 600:'#4a7343', 700:'#385a33' },
+                        resin:  { 100:'#eef5da', 300:'#bfdc7e', 500:'#8bae35', 600:'#6f8f28', 700:'#556e1e' },
+                        clay:   { 100:'#f3ded6', 500:'#b3462c', 600:'#93381f' },
+                        mist:   '#f1f4f0',
+                        ink:    '#1c2621'
                     },
                     fontFamily: {
                         display: ['"Fraunces"', 'serif'],
@@ -57,7 +60,7 @@
                     <button id="tab-analisis" onclick="switchPage('analisis')" class="nav-tab-btn"><i class="fas fa-chart-pie"></i><span>Analisis</span></button>
                 </div>
 
-                <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-canopy-50 hover:bg-canopy-800 transition" onclick="toggleMobileMenu()" aria-label="Buka menu">
+                <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-canopy-50 hover:bg-canopy-800 transition" onclick="toggleMobileMenu()" aria-label="Buka menu" aria-expanded="false" aria-controls="mobileMenu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -120,18 +123,18 @@
     <!-- ============ FLASH MESSAGES ============ -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-3">
         @if(session('success'))
-            <div id="flashSuccess" class="relative overflow-hidden bg-canopy-50 border-l-4 border-canopy-600 text-canopy-800 p-4 rounded-md shadow-md flex items-start space-x-3">
+            <div id="flashSuccess" class="relative overflow-hidden bg-canopy-50 border-l-4 border-canopy-600 text-canopy-800 p-4 rounded-md shadow-md flex items-start space-x-3" role="status">
                 <i class="fas fa-circle-check text-2xl mt-1"></i>
                 <div><p class="font-semibold">Berhasil!</p><p class="text-sm">{{ session('success') }}</p></div>
-                <button onclick="dismissFlash('flashSuccess')" class="ml-auto text-canopy-700 hover:text-canopy-900"><i class="fas fa-times"></i></button>
+                <button onclick="dismissFlash('flashSuccess')" class="ml-auto text-canopy-700 hover:text-canopy-900" aria-label="Tutup notifikasi"><i class="fas fa-times"></i></button>
                 <div class="absolute bottom-0 left-0 h-1 bg-canopy-600" id="flashSuccessBar" style="width:100%"></div>
             </div>
         @endif
         @if(session('error'))
-            <div id="flashError" class="relative overflow-hidden bg-clay-100 border-l-4 border-clay-500 text-clay-600 p-4 rounded-md shadow-md flex items-start space-x-3">
+            <div id="flashError" class="relative overflow-hidden bg-clay-100 border-l-4 border-clay-500 text-clay-600 p-4 rounded-md shadow-md flex items-start space-x-3" role="alert">
                 <i class="fas fa-triangle-exclamation text-2xl mt-1"></i>
                 <div><p class="font-semibold">Terjadi Kesalahan</p><p class="text-sm">{{ session('error') }}</p></div>
-                <button onclick="dismissFlash('flashError')" class="ml-auto text-clay-600 hover:text-clay-700"><i class="fas fa-times"></i></button>
+                <button onclick="dismissFlash('flashError')" class="ml-auto text-clay-600 hover:text-clay-700" aria-label="Tutup notifikasi"><i class="fas fa-times"></i></button>
                 <div class="absolute bottom-0 left-0 h-1 bg-clay-500" id="flashErrorBar" style="width:100%"></div>
             </div>
         @endif
@@ -343,7 +346,7 @@
         <!-- ============ TAMBAH LAHAN PAGE ============ -->
         <section id="page-tambah-lahan" class="page-section hidden space-y-6">
             <div class="flex items-center space-x-3 mb-2 border-b border-canopy-100 pb-5">
-                <button onclick="switchPage('dashboard')" class="p-2 bg-white rounded-md shadow border border-canopy-100 text-canopy-700 hover:bg-canopy-50"><i class="fas fa-arrow-left"></i></button>
+                <button onclick="switchPage('dashboard')" class="p-2 bg-white rounded-md shadow border border-canopy-100 text-canopy-700 hover:bg-canopy-50" aria-label="Kembali ke dashboard"><i class="fas fa-arrow-left"></i></button>
                 <div>
                     <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Pendaftaran Blok Baru</p>
                     <h2 class="text-3xl font-display font-semibold text-canopy-900">Tambah Lahan Baru</h2>
@@ -402,17 +405,17 @@
                         <div>
                             <label class="field-label text-sm font-semibold mb-3">Pilih Cepat Status</label>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <button type="button" onclick="quickStatus('Konservasi')" class="status-quick-btn border-canopy-200 hover:border-canopy-500 bg-canopy-50">
+                                <button type="button" onclick="quickStatus('Konservasi', event)" class="status-quick-btn border-canopy-200 hover:border-canopy-500 bg-canopy-50">
                                     <i class="fas fa-leaf text-canopy-700 text-lg mb-1"></i>
                                     <p class="font-semibold text-canopy-800 text-sm">Konservasi</p>
                                     <p class="text-xs text-canopy-600">Perlindungan ekosistem</p>
                                 </button>
-                                <button type="button" onclick="quickStatus('Produksi')" class="status-quick-btn border-bark-200 hover:border-bark-500 bg-bark-100/60">
+                                <button type="button" onclick="quickStatus('Produksi', event)" class="status-quick-btn border-bark-200 hover:border-bark-500 bg-bark-100/60">
                                     <i class="fas fa-industry text-bark-600 text-lg mb-1"></i>
                                     <p class="font-semibold text-bark-700 text-sm">Produksi</p>
                                     <p class="text-xs text-bark-600">Hasil hutan komersial</p>
                                 </button>
-                                <button type="button" onclick="quickStatus('Reboisasi')" class="status-quick-btn border-resin-200 hover:border-resin-500 bg-resin-100/60">
+                                <button type="button" onclick="quickStatus('Reboisasi', event)" class="status-quick-btn border-resin-200 hover:border-resin-500 bg-resin-100/60">
                                     <i class="fas fa-seedling text-resin-600 text-lg mb-1"></i>
                                     <p class="font-semibold text-resin-700 text-sm">Reboisasi</p>
                                     <p class="text-xs text-resin-600">Penanaman kembali</p>
@@ -468,7 +471,7 @@
             </div>
         </section>
 
-        <!-- ============ KEGIATAN LAHAN PAGE (NEW) ============ -->
+        <!-- ============ KEGIATAN LAHAN PAGE ============ -->
         <section id="page-kegiatan" class="page-section hidden space-y-6">
             <div class="border-b border-canopy-100 pb-5">
                 <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Buku Lapangan</p>
@@ -544,7 +547,7 @@
             </div>
         </section>
 
-        <!-- ============ PRODUKSI HASIL HUTAN PAGE (NEW) ============ -->
+        <!-- ============ PRODUKSI HASIL HUTAN PAGE ============ -->
         <section id="page-produksi" class="page-section hidden space-y-6">
             <div class="border-b border-canopy-100 pb-5">
                 <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Buku Hasil Hutan</p>
@@ -601,7 +604,7 @@
                             <label class="field-label text-sm font-semibold">Catatan</label>
                             <textarea id="p_catatan" rows="2" placeholder="Kualitas, tujuan distribusi, dsb." class="field-input"></textarea>
                         </div>
-                        <button type="submit" class="btn-primary w-full justify-center" style="background-color:#6b4a32"><i class="fas fa-save"></i><span>Simpan Produksi</span></button>
+                        <button type="submit" class="btn-primary w-full justify-center bg-bark-600 hover:bg-bark-700"><i class="fas fa-save"></i><span>Simpan Produksi</span></button>
                     </form>
                 </div>
 
@@ -615,7 +618,7 @@
                     </div>
 
                     <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
-                        <div class="panel-header bg-gradient-to-r from-bark-600 to-bark-500">
+                        <div class="panel-header bg-gradient-to-r from-bark-700 to-bark-500">
                             <i class="fas fa-list"></i><span>Riwayat Produksi</span>
                             <button onclick="exportProduksiCSV()" class="ml-auto bg-white text-bark-700 hover:bg-bark-100 px-3 py-1.5 rounded-md font-semibold text-xs shadow transition flex items-center space-x-1"><i class="fas fa-file-csv"></i><span>Export</span></button>
                         </div>
@@ -666,7 +669,7 @@
                     <div class="shrink-0 mx-auto sm:mx-0">
                         <svg width="160" height="160" viewBox="0 0 160 160" id="ringGauge">
                             <circle cx="80" cy="80" r="70" fill="none" stroke="#eef2ed" stroke-width="14"/>
-                            <circle id="ringTarget" cx="80" cy="80" r="70" fill="none" stroke="#c9ad8c" stroke-width="2" stroke-dasharray="4 4" transform="rotate(-90 80 80)"/>
+                            <circle id="ringTarget" cx="80" cy="80" r="70" fill="none" stroke="#a9cba0" stroke-width="2" stroke-dasharray="4 4" transform="rotate(-90 80 80)"/>
                             <circle id="ringProgress" cx="80" cy="80" r="70" fill="none" stroke="#2f6349" stroke-width="14" stroke-linecap="round" stroke-dasharray="0 440" transform="rotate(-90 80 80)" style="transition: stroke-dasharray 1s ease-out, stroke .4s;"/>
                             <text x="80" y="76" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="26" font-weight="600" fill="#152e24" id="ringPct">0%</text>
                             <text x="80" y="96" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="10" fill="#6b7280">konservasi</text>
@@ -726,13 +729,13 @@
                     <div class="mt-4 text-center bg-resin-100/60 p-2 rounded-md"><p class="text-sm text-gray-600">Total Blok: <span id="donutTotal" class="font-mono font-bold text-resin-600">0</span> lahan</p></div>
                 </div>
 
-                <div class="chart-card border-clay-500">
+                <div class="chart-card border-canopy-700">
                     <div class="flex items-center justify-between mb-4">
-                        <h4 class="panel-title mb-0"><i class="fas fa-ranking-star text-clay-500 mr-2"></i> Top 5 Lahan Terluas</h4>
+                        <h4 class="panel-title mb-0"><i class="fas fa-ranking-star text-canopy-700 mr-2"></i> Top 5 Lahan Terluas</h4>
                         <button onclick="downloadChart('topChart','top-5-lahan-terluas')" class="no-print text-gray-400 hover:text-canopy-600 transition" title="Unduh grafik"><i class="fas fa-download"></i></button>
                     </div>
                     <div class="relative" style="height: 300px;"><canvas id="topChart"></canvas></div>
-                    <div class="mt-4 text-center bg-clay-100 p-2 rounded-md"><p class="text-sm text-gray-600">Berdasarkan luas hektar tertinggi saat ini</p></div>
+                    <div class="mt-4 text-center bg-canopy-50 p-2 rounded-md"><p class="text-sm text-gray-600">Berdasarkan luas hektar tertinggi saat ini</p></div>
                 </div>
 
                 <div class="chart-card border-canopy-700 lg:col-span-2">
@@ -749,8 +752,6 @@
     </div>
 
     <style>
-        @import url('https://fonts.googleapis.com');
-
         @keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         .page-section:not(.hidden) { animation: fade-in .35s ease-out forwards; }
 
@@ -786,7 +787,7 @@
         .status-Produksi { @apply bg-bark-100 text-bark-700; }
         .status-Reboisasi { @apply bg-resin-100 text-resin-700; }
 
-        .action-btn { @apply text-white px-2.5 py-1.5 rounded-md text-xs font-semibold shadow-sm; }
+        .action-btn { @apply text-white px-2.5 py-1.5 rounded-md text-xs font-semibold shadow-sm transition hover:brightness-110; }
         .btn-primary { @apply bg-canopy-700 hover:bg-canopy-800 text-white px-5 py-2.5 rounded-md font-medium shadow-md transition flex items-center justify-center space-x-2; }
         .btn-outline { @apply bg-white border-2 border-canopy-600 text-canopy-700 hover:bg-canopy-50 px-3 py-2 rounded-md text-sm font-semibold transition flex items-center space-x-1; }
         .btn-outline-neutral { @apply bg-white border-2 border-gray-300 text-gray-600 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-semibold transition flex items-center space-x-1; }
@@ -796,6 +797,10 @@
 
         #tableBody tr.hidden-row { display: none !important; }
         .page-num-btn.active-page { background-color: #2f6349; color: #fff; border-color: #2f6349; }
+
+        button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+            outline: 2px solid #3f7a5c; outline-offset: 2px;
+        }
 
         @media print {
             nav, #mobileMenu, #flashSuccess, #flashError, #liveClock, #dataNotice,
@@ -835,7 +840,13 @@
             if (pageId === 'dashboard') { renderReminders(); renderRecentActivity(); updateDashboardKpis(); }
         }
 
-        function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const btn = document.getElementById('mobileMenuBtn');
+            const willShow = menu.classList.contains('hidden');
+            menu.classList.toggle('hidden');
+            btn?.setAttribute('aria-expanded', String(willShow));
+        }
         window.addEventListener('resize', () => { if (window.innerWidth >= 1024) document.getElementById('mobileMenu').classList.add('hidden'); });
 
         // ================= Flash messages =================
@@ -894,12 +905,13 @@
             document.getElementById('previewPic').textContent = pic ? pic : '-';
         }
 
-        function quickStatus(status) {
+        function quickStatus(status, evt) {
             const select = document.getElementById('status');
             if (select) select.value = status;
-            document.querySelectorAll('.status-quick-btn').forEach(b => b.classList.remove('ring-2', 'ring-offset-1'));
+            document.querySelectorAll('.status-quick-btn').forEach(b => b.classList.remove('ring-2', 'ring-offset-1', 'ring-canopy-500', 'ring-bark-500', 'ring-resin-500'));
             const map = { Konservasi: 'ring-canopy-500', Produksi: 'ring-bark-500', Reboisasi: 'ring-resin-500' };
-            event?.currentTarget?.classList.add('ring-2', 'ring-offset-1', map[status]);
+            const target = evt?.currentTarget;
+            if (target) target.classList.add('ring-2', 'ring-offset-1', map[status]);
             updatePreview();
         }
 
@@ -1115,7 +1127,7 @@
         }
 
         function populateLahanSelects() {
-            const opts = landsData.map(l => `<option value="${l.id}">${l.nama_lahan}</option>`).join('');
+            const opts = landsData.map(l => `<option value="${l.id}">${escapeHtml(l.nama_lahan)}</option>`).join('');
             ['k_lahan', 'p_lahan'].forEach(id => { const el = document.getElementById(id); if (el && !el.dataset.filled) { el.innerHTML = opts; el.dataset.filled = '1'; } });
             const kFilter = document.getElementById('kFilterLahan');
             if (kFilter && !kFilter.dataset.filled) {
@@ -1144,6 +1156,8 @@
             saveKegiatan(arr);
             document.getElementById('kegiatanForm').reset();
             renderKegiatanList();
+            renderReminders();
+            renderRecentActivity();
             Swal.fire({ icon: 'success', title: 'Kegiatan tercatat', timer: 1400, showConfirmButton: false });
             return false;
         }
@@ -1172,14 +1186,14 @@
                     <div class="w-9 h-9 rounded-full bg-${color}-100 flex items-center justify-center shrink-0 mt-0.5"><i class="fas ${icon} text-${color}-700 text-sm"></i></div>
                     <div class="flex-1 min-w-0">
                         <div class="flex flex-wrap items-center gap-2">
-                            <span class="font-semibold text-gray-900 text-sm">${k.jenis}</span>
+                            <span class="font-semibold text-gray-900 text-sm">${escapeHtml(k.jenis)}</span>
                             <span class="text-xs text-gray-400 font-mono">${formatTanggal(k.tanggal)}</span>
                             ${k.tindaklanjut ? `<span class="text-[11px] px-2 py-0.5 rounded-full bg-clay-100 text-clay-600 font-semibold">Tindak lanjut: ${formatTanggal(k.tindaklanjut)}</span>` : ''}
                         </div>
                         <p class="text-sm text-gray-600 mt-0.5">${escapeHtml(k.lahan_nama)} &middot; ${escapeHtml(k.petugas)}</p>
                         ${k.catatan ? `<p class="text-xs text-gray-500 mt-1">${escapeHtml(k.catatan)}</p>` : ''}
                     </div>
-                    <button onclick="deleteKegiatan('${k.id}')" class="text-gray-300 hover:text-clay-500 transition" title="Hapus"><i class="fas fa-trash-alt"></i></button>
+                    <button onclick="deleteKegiatan('${k.id}')" class="text-gray-300 hover:text-clay-500 transition" title="Hapus" aria-label="Hapus kegiatan"><i class="fas fa-trash-alt"></i></button>
                 `;
                 list.appendChild(row);
             });
@@ -1206,11 +1220,16 @@
             const lahanSelect = document.getElementById('p_lahan');
             const lahanId = lahanSelect.value;
             const lahanNama = lahanSelect.options[lahanSelect.selectedIndex]?.text || '';
+            const jumlahVal = parseFloat(document.getElementById('p_jumlah').value);
+            if (isNaN(jumlahVal) || jumlahVal <= 0) {
+                Swal.fire('Jumlah tidak valid', 'Masukkan jumlah produksi lebih besar dari 0.', 'error');
+                return false;
+            }
             const entry = {
                 id: 'p' + Date.now(),
                 lahan_id: lahanId, lahan_nama: lahanNama,
                 komoditas: document.getElementById('p_komoditas').value,
-                jumlah: parseFloat(document.getElementById('p_jumlah').value),
+                jumlah: jumlahVal,
                 satuan: document.getElementById('p_satuan').value,
                 tanggal: document.getElementById('p_tanggal').value,
                 catatan: document.getElementById('p_catatan').value
@@ -1244,7 +1263,7 @@
                         <td class="td-cell text-sm text-gray-800">${escapeHtml(p.lahan_nama)}</td>
                         <td class="td-cell text-sm text-gray-800">${escapeHtml(p.komoditas)}</td>
                         <td class="td-cell font-mono font-bold text-bark-600">${p.jumlah} ${satuanLabel(p.satuan)}</td>
-                        <td class="td-cell"><button onclick="deleteProduksi('${p.id}')" class="action-btn bg-clay-500 hover:bg-clay-600"><i class="fas fa-trash-alt"></i></button></td>
+                        <td class="td-cell"><button onclick="deleteProduksi('${p.id}')" class="action-btn bg-clay-500 hover:bg-clay-600" aria-label="Hapus produksi"><i class="fas fa-trash-alt"></i></button></td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -1279,7 +1298,7 @@
             if (produksiChart) produksiChart.destroy();
             produksiChart = new Chart(canvas.getContext('2d'), {
                 type: 'line',
-                data: { labels: labels.length ? labels : ['-'], datasets: [{ label: 'Total Jumlah Produksi', data: values.length ? values : [0], borderColor: '#6b4a32', backgroundColor: 'rgba(107,74,50,0.15)', fill: true, tension: 0.3 }] },
+                data: { labels: labels.length ? labels : ['-'], datasets: [{ label: 'Total Jumlah Produksi', data: values.length ? values : [0], borderColor: '#4a7343', backgroundColor: 'rgba(74,115,67,0.15)', fill: true, tension: 0.3 }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
             });
         }
@@ -1305,7 +1324,7 @@
                 row.innerHTML = `
                     <div class="min-w-0">
                         <p class="text-sm font-semibold text-gray-800 truncate">${escapeHtml(k.lahan_nama)}</p>
-                        <p class="text-xs text-gray-500">${k.jenis} &middot; jatuh tempo ${formatTanggal(k.tindaklanjut)}</p>
+                        <p class="text-xs text-gray-500">${escapeHtml(k.jenis)} &middot; jatuh tempo ${formatTanggal(k.tindaklanjut)}</p>
                     </div>
                     <span class="text-[11px] px-2 py-1 rounded-full font-semibold shrink-0 ${badgeClass}">${badgeText}</span>
                 `;
@@ -1332,7 +1351,7 @@
                 row.innerHTML = `
                     <div class="w-8 h-8 rounded-full bg-${color}-100 flex items-center justify-center shrink-0"><i class="fas ${icon} text-${color}-700 text-xs"></i></div>
                     <div class="min-w-0">
-                        <p class="text-sm text-gray-800 truncate"><span class="font-semibold">${k.jenis}</span> &middot; ${escapeHtml(k.lahan_nama)}</p>
+                        <p class="text-sm text-gray-800 truncate"><span class="font-semibold">${escapeHtml(k.jenis)}</span> &middot; ${escapeHtml(k.lahan_nama)}</p>
                         <p class="text-xs text-gray-400 font-mono">${formatTanggal(k.tanggal)} &middot; ${escapeHtml(k.petugas)}</p>
                     </div>
                 `;
@@ -1381,7 +1400,8 @@
             if (document.getElementById('barTotal')) document.getElementById('barTotal').textContent = totalLuas.toFixed(2);
             if (document.getElementById('donutTotal')) document.getElementById('donutTotal').textContent = totalCount;
 
-            const palette = ['#2f6349', '#6b4a32', '#c88a2c'];
+            // Palet hijau bertingkat: hijau tua (Konservasi), hijau moss (Produksi), hijau lime (Reboisasi)
+            const palette = ['#2f6349', '#4a7343', '#6f8f28'];
 
             const pieCtx = document.getElementById('pieChart').getContext('2d');
             if (pieChart) pieChart.destroy();
@@ -1398,7 +1418,7 @@
             const topFive = [...landsData].sort((a, b) => parseFloat(b.luas_hektar) - parseFloat(a.luas_hektar)).slice(0, 5);
             const topCtx = document.getElementById('topChart').getContext('2d');
             if (topChart) topChart.destroy();
-            topChart = new Chart(topCtx, { type: 'bar', data: { labels: topFive.map(l => l.nama_lahan), datasets: [{ label: 'Luas (Ha)', data: topFive.map(l => parseFloat(l.luas_hektar)), backgroundColor: '#c88a2c', borderRadius: 6 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } } });
+            topChart = new Chart(topCtx, { type: 'bar', data: { labels: topFive.map(l => l.nama_lahan), datasets: [{ label: 'Luas (Ha)', data: topFive.map(l => parseFloat(l.luas_hektar)), backgroundColor: '#6f8f28', borderRadius: 6 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } } });
 
             const sizeBuckets = { Kecil: 0, Sedang: 0, Besar: 0 };
             landsData.forEach(l => { const luas = parseFloat(l.luas_hektar); if (luas < 10) sizeBuckets.Kecil++; else if (luas <= 50) sizeBuckets.Sedang++; else sizeBuckets.Besar++; });
@@ -1442,7 +1462,7 @@
             const ringTarget = document.getElementById('ringTarget');
             if (ringProgress) {
                 ringProgress.setAttribute('stroke-dasharray', `${progress} ${circumference}`);
-                ringProgress.setAttribute('stroke', pct >= target ? '#2f6349' : '#c88a2c');
+                ringProgress.setAttribute('stroke', pct >= target ? '#2f6349' : '#6f8f28');
             }
             if (ringTarget) {
                 const targetLen = target / 100 * circumference;
@@ -1473,12 +1493,12 @@
 
             const dominantByLuas = Object.entries(statusLuas).sort((a, b) => b[1] - a[1])[0];
             const dominantPct = totalLuas > 0 ? (dominantByLuas[1] / totalLuas) * 100 : 0;
-            addInsight('fa-chart-pie', 'text-canopy-600', `Status <b>${dominantByLuas[0]}</b> mendominasi dengan <b>${dominantPct.toFixed(1)}%</b> dari total luas lahan (${dominantByLuas[1].toFixed(2)} Ha).`);
+            addInsight('fa-chart-pie', 'text-canopy-600', `Status <b>${escapeHtml(dominantByLuas[0])}</b> mendominasi dengan <b>${dominantPct.toFixed(1)}%</b> dari total luas lahan (${dominantByLuas[1].toFixed(2)} Ha).`);
 
             const sorted = [...landsData].sort((a, b) => parseFloat(b.luas_hektar) - parseFloat(a.luas_hektar));
             const largest = sorted[0];
             const smallest = sorted[sorted.length - 1];
-            addInsight('fa-ranking-star', 'text-resin-600', `Lahan terluas adalah <b>${largest.nama_lahan}</b> (${parseFloat(largest.luas_hektar).toFixed(2)} Ha), sedangkan terkecil <b>${smallest.nama_lahan}</b> (${parseFloat(smallest.luas_hektar).toFixed(2)} Ha).`);
+            addInsight('fa-ranking-star', 'text-resin-600', `Lahan terluas adalah <b>${escapeHtml(largest.nama_lahan)}</b> (${parseFloat(largest.luas_hektar).toFixed(2)} Ha), sedangkan terkecil <b>${escapeHtml(smallest.nama_lahan)}</b> (${parseFloat(smallest.luas_hektar).toFixed(2)} Ha).`);
 
             const avg = totalLuas / totalCount;
             addInsight('fa-balance-scale', 'text-bark-600', `Rata-rata luas per lahan saat ini adalah <b>${avg.toFixed(2)} Ha</b> dari total ${totalCount} blok terdaftar.`);
