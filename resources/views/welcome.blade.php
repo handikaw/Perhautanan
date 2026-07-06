@@ -354,7 +354,7 @@
                     </div>
                     <p class="text-xs text-emerald-600 font-semibold mb-6 h-4" id="proBillingNote">&nbsp;</p>
 
-                    <a href="{{ route('subscription.checkout', ['plan' => 'pro', 'cycle' => 'monthly']) }}" class="block text-center bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white px-6 py-3 rounded-lg font-bold shadow-lg transition mb-8">
+                    <a href="{{ route('register') }}" class="block text-center bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white px-6 py-3 rounded-lg font-bold shadow-lg transition mb-8">
                         Coba Pro Sekarang
                     </a>
 
@@ -518,16 +518,41 @@
         </div>
     </section>
 
-    <!-- ============ FOOTER (SIMPLE) ============ -->
-    <footer class="bg-gray-900 text-gray-300 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-tree text-emerald-500"></i>
-                <span class="font-bold text-white">Perhutani</span>
+    <!-- ============ FOOTER (SIMPEL) ============ -->
+    <footer class="bg-gray-900 text-gray-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row items-center md:items-center justify-between gap-6 text-center md:text-left">
+
+                <div class="flex items-center space-x-3 order-1">
+                    <div class="bg-gradient-to-br from-emerald-600 to-green-600 p-2 rounded-lg shrink-0">
+                        <i class="fas fa-tree text-white text-lg"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="block text-lg font-bold text-white leading-tight">Perhutani</span>
+                        <span class="block text-xs text-gray-500">Monitoring Lahan &amp; Hasil Hutan</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm order-3 md:order-2">
+                    <a href="#features" class="hover:text-emerald-400 transition">Fitur</a>
+                    <a href="#pricing" class="hover:text-emerald-400 transition">Harga</a>
+                    <a href="#faq" class="hover:text-emerald-400 transition">FAQ</a>
+                    <a href="#" class="hover:text-emerald-400 transition">Kontak</a>
+                    <a href="#" class="hover:text-emerald-400 transition">Kebijakan Privasi</a>
+                </div>
+
+                <div class="flex space-x-3 order-2 md:order-3">
+                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
-            <p class="text-sm text-gray-500">
+        </div>
+
+        <div class="border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-xs text-gray-500">
                 &copy; {{ date('Y') }} Perhutani. Seluruh hak cipta dilindungi.
-            </p>
+            </div>
         </div>
     </footer>
 
