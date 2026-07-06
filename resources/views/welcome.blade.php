@@ -518,36 +518,16 @@
         </div>
     </section>
 
-    <!-- ============ FOOTER (SIMPEL) ============ -->
+    <!-- ============ FOOTER (SIMPLE) ============ -->
     <footer class="bg-gray-900 text-gray-300 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-
-                <div class="flex items-center space-x-3">
-                    <div class="bg-gradient-to-br from-emerald-600 to-green-600 p-2 rounded-lg">
-                        <i class="fas fa-tree text-white text-lg"></i>
-                    </div>
-                    <span class="text-lg font-bold text-white">Perhutani</span>
-                </div>
-
-                <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
-                    <a href="#features" class="hover:text-emerald-400 transition">Fitur</a>
-                    <a href="#pricing" class="hover:text-emerald-400 transition">Harga</a>
-                    <a href="#faq" class="hover:text-emerald-400 transition">FAQ</a>
-                    <a href="#" class="hover:text-emerald-400 transition">Kontak</a>
-                    <a href="#" class="hover:text-emerald-400 transition">Kebijakan Privasi</a>
-                </div>
-
-                <div class="flex space-x-3">
-                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition"><i class="fab fa-linkedin-in"></i></a>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-tree text-emerald-500"></i>
+                <span class="font-bold text-white">Perhutani</span>
             </div>
-
-            <div class="border-t border-gray-800 mt-6 pt-6 text-center text-sm text-gray-500">
+            <p class="text-sm text-gray-500">
                 &copy; {{ date('Y') }} Perhutani. Seluruh hak cipta dilindungi.
-            </div>
+            </p>
         </div>
     </footer>
 
