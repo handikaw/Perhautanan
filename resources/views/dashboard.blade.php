@@ -364,45 +364,144 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-lg border-t-4 border-emerald-600 p-6 max-w-2xl">
-                <form method="POST" action="{{ route('forest.store') }}" class="space-y-5" id="addForm" onsubmit="return validateAddForm()">
-                    @csrf
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lahan / Blok Hutan</label>
-                        <input type="text" name="nama_lahan" id="nama_lahan" required minlength="3" placeholder="Contoh: Blok RPH Mangunan A1" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                        <p class="text-xs text-gray-400 mt-1">Gunakan nama yang jelas agar mudah dikenali pada tabel &amp; grafik.</p>
-                    </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Form utama -->
+                <div class="lg:col-span-2 bg-white rounded-xl shadow-lg border-t-4 border-emerald-600 p-6 sm:p-8">
+                    <form method="POST" action="{{ route('forest.store') }}" class="space-y-6" id="addForm" onsubmit="return validateAddForm()">
+                        @csrf
+
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Luas Lahan (Hektar)</label>
-                            <div class="relative">
-                                <input type="number" step="0.01" min="0.01" name="luas_hektar" id="luas_hektar" required placeholder="0.00" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                                <span class="absolute right-4 top-3 text-sm text-gray-400 font-bold">Ha</span>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-signature text-emerald-500 mr-1"></i> Nama Lahan / Blok Hutan
+                            </label>
+                            <input type="text" name="nama_lahan" id="nama_lahan" required minlength="3"
+                                   placeholder="Contoh: Blok RPH Mangunan A1"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-base"
+                                   oninput="updatePreview()">
+                            <p class="text-xs text-gray-400 mt-1.5">Gunakan nama yang jelas agar mudah dikenali pada tabel &amp; grafik.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-ruler-combined text-emerald-500 mr-1"></i> Luas Lahan (Hektar)
+                                </label>
+                                <div class="relative">
+                                    <input type="number" step="0.01" min="0.01" name="luas_hektar" id="luas_hektar" required
+                                           placeholder="0.00"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-base"
+                                           oninput="updatePreview()">
+                                    <span class="absolute right-4 top-3.5 text-sm text-gray-400 font-bold">Ha</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-tag text-emerald-500 mr-1"></i> Status Pemanfaatan
+                                </label>
+                                <select name="status" id="status" required
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-base"
+                                        onchange="updatePreview()">
+                                    <option value="Konservasi">Konservasi</option>
+                                    <option value="Produksi">Produksi</option>
+                                    <option value="Reboisasi">Reboisasi</option>
+                                </select>
                             </div>
                         </div>
+
+                        <!-- Pilihan status bergambar, mempermudah & memperjelas -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Status Pemanfaatan</label>
-                            <select name="status" id="status" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                                <option value="Konservasi">Konservasi</option>
-                                <option value="Produksi">Produksi</option>
-                                <option value="Reboisasi">Reboisasi</option>
-                            </select>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Pilih Cepat Status</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <button type="button" onclick="quickStatus('Konservasi')" class="status-quick-btn border-2 border-green-200 hover:border-green-500 bg-green-50 rounded-lg p-3 text-left transition">
+                                    <i class="fas fa-leaf text-green-600 text-lg mb-1"></i>
+                                    <p class="font-semibold text-green-800 text-sm">Konservasi</p>
+                                    <p class="text-xs text-green-600">Perlindungan ekosistem</p>
+                                </button>
+                                <button type="button" onclick="quickStatus('Produksi')" class="status-quick-btn border-2 border-blue-200 hover:border-blue-500 bg-blue-50 rounded-lg p-3 text-left transition">
+                                    <i class="fas fa-industry text-blue-600 text-lg mb-1"></i>
+                                    <p class="font-semibold text-blue-800 text-sm">Produksi</p>
+                                    <p class="text-xs text-blue-600">Hasil hutan komersial</p>
+                                </button>
+                                <button type="button" onclick="quickStatus('Reboisasi')" class="status-quick-btn border-2 border-yellow-200 hover:border-yellow-500 bg-yellow-50 rounded-lg p-3 text-left transition">
+                                    <i class="fas fa-tree text-yellow-600 text-lg mb-1"></i>
+                                    <p class="font-semibold text-yellow-800 text-sm">Reboisasi</p>
+                                    <p class="text-xs text-yellow-600">Penanaman kembali</p>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-4 text-xs text-emerald-700 flex items-start space-x-2">
+                            <i class="fas fa-circle-info mt-0.5"></i>
+                            <span>Data akan langsung tampil pada Dashboard dan grafik Analisis Lahan setelah disimpan.</span>
+                        </div>
+
+                        <div class="pt-2 flex flex-col-reverse sm:flex-row justify-end gap-3">
+                            <button type="button" onclick="switchPage('dashboard')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-lg font-medium transition">Batal</button>
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-md transition flex items-center justify-center space-x-2">
+                                <i class="fas fa-save"></i> <span>Simpan Data Lahan</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Panel bantuan & pratinjau -->
+                <div class="space-y-6">
+                    <div class="bg-white rounded-xl shadow-lg border-t-4 border-teal-500 p-6">
+                        <h4 class="text-sm font-bold text-gray-700 uppercase tracking-wide mb-4 flex items-center">
+                            <i class="fas fa-eye text-teal-600 mr-2"></i> Pratinjau Data
+                        </h4>
+                        <div class="border-2 border-dashed border-gray-200 rounded-lg p-4 space-y-3">
+                            <div>
+                                <p class="text-xs text-gray-400 uppercase tracking-wide">Nama Lahan</p>
+                                <p id="previewNama" class="font-bold text-gray-800 text-lg">-</p>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-gray-100">
+                                <div>
+                                    <p class="text-xs text-gray-400 uppercase tracking-wide">Luas</p>
+                                    <p id="previewLuas" class="font-bold text-emerald-700">0.00 Ha</p>
+                                </div>
+                                <span id="previewStatus" class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">Konservasi</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-3 text-xs text-emerald-700 flex items-start space-x-2">
-                        <i class="fas fa-circle-info mt-0.5"></i>
-                        <span>Data akan langsung tampil pada Dashboard dan grafik Analisis Lahan setelah disimpan.</span>
+                    <div class="bg-white rounded-xl shadow-lg border-t-4 border-amber-500 p-6">
+                        <h4 class="text-sm font-bold text-gray-700 uppercase tracking-wide mb-4 flex items-center">
+                            <i class="fas fa-lightbulb text-amber-500 mr-2"></i> Tips Pengisian
+                        </h4>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-check-circle text-emerald-500 mt-0.5"></i>
+                                <span>Sertakan kode petak/RPH pada nama agar mudah dicari, contoh <em>"RPH Mangunan A1"</em>.</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-check-circle text-emerald-500 mt-0.5"></i>
+                                <span>Luas lahan diinput dalam satuan hektar, gunakan titik desimal misal <em>12.50</em>.</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-check-circle text-emerald-500 mt-0.5"></i>
+                                <span>Status menentukan warna &amp; pengelompokan lahan pada grafik Analisis.</span>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div class="pt-4 flex justify-end space-x-3">
-                        <button type="button" onclick="switchPage('dashboard')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-lg font-medium transition">Batal</button>
-                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-md transition flex items-center space-x-2">
-                            <i class="fas fa-save"></i> <span>Simpan Data Lahan</span>
-                        </button>
+                    <div class="bg-white rounded-xl shadow-lg border-t-4 border-emerald-500 p-6">
+                        <h4 class="text-sm font-bold text-gray-700 uppercase tracking-wide mb-4 flex items-center">
+                            <i class="fas fa-chart-simple text-emerald-600 mr-2"></i> Ringkasan Saat Ini
+                        </h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">Total Lahan</span>
+                                <span class="font-bold text-emerald-700">{{ $forestLands->count() }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">Total Luas</span>
+                                <span class="font-bold text-emerald-700">{{ number_format($forestLands->sum('luas_hektar'), 2) }} Ha</span>
+                            </div>
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
         </section>
 
@@ -586,6 +685,38 @@
             }).then((result) => {
                 if (result.isConfirmed) form.submit();
             });
+        }
+
+        // ---------- Add form: live preview & quick status ----------
+        const statusBadgeClass = {
+            Konservasi: 'bg-green-100 text-green-800',
+            Produksi: 'bg-blue-100 text-blue-800',
+            Reboisasi: 'bg-yellow-100 text-yellow-800'
+        };
+
+        function updatePreview() {
+            const nama = document.getElementById('nama_lahan')?.value.trim();
+            const luas = parseFloat(document.getElementById('luas_hektar')?.value);
+            const status = document.getElementById('status')?.value || 'Konservasi';
+
+            const previewNama = document.getElementById('previewNama');
+            const previewLuas = document.getElementById('previewLuas');
+            const previewStatus = document.getElementById('previewStatus');
+            if (!previewNama) return;
+
+            previewNama.textContent = nama ? nama : '-';
+            previewLuas.textContent = (isNaN(luas) ? 0 : luas).toFixed(2) + ' Ha';
+            previewStatus.textContent = status;
+            previewStatus.className = `px-3 py-1 rounded-full text-xs font-bold ${statusBadgeClass[status] || statusBadgeClass.Konservasi}`;
+        }
+
+        function quickStatus(status) {
+            const select = document.getElementById('status');
+            if (select) select.value = status;
+            document.querySelectorAll('.status-quick-btn').forEach(b => b.classList.remove('ring-2', 'ring-offset-1'));
+            const map = { Konservasi: 'ring-green-500', Produksi: 'ring-blue-500', Reboisasi: 'ring-yellow-500' };
+            event?.currentTarget?.classList.add('ring-2', 'ring-offset-1', map[status]);
+            updatePreview();
         }
 
         // ---------- Add form validation ----------
