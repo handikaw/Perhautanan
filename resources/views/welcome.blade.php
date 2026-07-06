@@ -354,7 +354,7 @@
                     </div>
                     <p class="text-xs text-emerald-600 font-semibold mb-6 h-4" id="proBillingNote">&nbsp;</p>
 
-                    <a href="{{ route('register') }}" class="block text-center bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white px-6 py-3 rounded-lg font-bold shadow-lg transition mb-8">
+                    <a href="{{ route('subscription.checkout', ['plan' => 'pro', 'cycle' => 'monthly']) }}" class="block text-center bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white px-6 py-3 rounded-lg font-bold shadow-lg transition mb-8">
                         Coba Pro Sekarang
                     </a>
 
@@ -518,45 +518,34 @@
         </div>
     </section>
 
-    <!-- ============ FOOTER ============ -->
-    <footer class="bg-gray-900 text-gray-300 py-12">
+    <!-- ============ FOOTER (SIMPEL) ============ -->
+    <footer class="bg-gray-900 text-gray-300 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="bg-gradient-to-br from-emerald-600 to-green-600 p-2 rounded-lg">
-                            <i class="fas fa-tree text-white text-xl"></i>
-                        </div>
-                        <span class="text-xl font-bold text-white">Perhutani</span>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+
+                <div class="flex items-center space-x-3">
+                    <div class="bg-gradient-to-br from-emerald-600 to-green-600 p-2 rounded-lg">
+                        <i class="fas fa-tree text-white text-lg"></i>
                     </div>
-                    <p class="text-sm text-gray-400">Sistem monitoring dan manajemen lahan perhutanan modern untuk semua skala pengelola.</p>
+                    <span class="text-lg font-bold text-white">Perhutani</span>
                 </div>
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Produk</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#features" class="hover:text-emerald-400 transition">Fitur</a></li>
-                        <li><a href="#pricing" class="hover:text-emerald-400 transition">Harga</a></li>
-                        <li><a href="#faq" class="hover:text-emerald-400 transition">FAQ</a></li>
-                    </ul>
+
+                <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+                    <a href="#features" class="hover:text-emerald-400 transition">Fitur</a>
+                    <a href="#pricing" class="hover:text-emerald-400 transition">Harga</a>
+                    <a href="#faq" class="hover:text-emerald-400 transition">FAQ</a>
+                    <a href="#" class="hover:text-emerald-400 transition">Kontak</a>
+                    <a href="#" class="hover:text-emerald-400 transition">Kebijakan Privasi</a>
                 </div>
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Perusahaan</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-emerald-400 transition">Tentang Kami</a></li>
-                        <li><a href="#" class="hover:text-emerald-400 transition">Kontak</a></li>
-                        <li><a href="#" class="hover:text-emerald-400 transition">Kebijakan Privasi</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Ikuti Kami</h4>
-                    <div class="flex space-x-3">
-                        <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+
+                <div class="flex space-x-3">
+                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-gray-800 hover:bg-emerald-600 flex items-center justify-center transition"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-            <div class="border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
+
+            <div class="border-t border-gray-800 mt-6 pt-6 text-center text-sm text-gray-500">
                 &copy; {{ date('Y') }} Perhutani. Seluruh hak cipta dilindungi.
             </div>
         </div>
