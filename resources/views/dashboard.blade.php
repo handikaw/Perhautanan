@@ -271,7 +271,7 @@
 
             <!-- Table Card -->
             <div class="bg-white rounded-lg shadow-md border border-canopy-200 overflow-hidden">
-                <div class="panel-header bg-gradient-to-r from-canopy-800 to-canopy-600">
+                <div class="panel-header bg-gradient-to-r from-canopy-700 to-canopy-500">
                     <div class="flex items-center space-x-2"><i class="fas fa-table"></i><span>Daftar Lahan Perhutanan</span></div>
                     <button onclick="switchPage('tambah-lahan')" class="ml-auto bg-resin-500 hover:bg-resin-600 text-canopy-900 px-3 py-1.5 rounded-md font-semibold text-xs shadow transition flex items-center space-x-1">
                         <i class="fas fa-plus"></i><span>Catat Lahan</span>
@@ -533,7 +533,7 @@
                     </div>
 
                     <div class="bg-white rounded-lg shadow-md border border-canopy-200 overflow-hidden">
-                        <div class="panel-header bg-gradient-to-r from-canopy-800 to-canopy-600"><i class="fas fa-timeline"></i><span>Lini Masa Kegiatan</span></div>
+                        <div class="panel-header bg-gradient-to-r from-canopy-700 to-canopy-500"><i class="fas fa-timeline"></i><span>Lini Masa Kegiatan</span></div>
                         <div id="kegiatanTimeline" class="divide-y divide-gray-100 max-h-[560px] overflow-y-auto"></div>
                         <div id="kegiatanEmpty" class="hidden text-center py-12">
                             <i class="fas fa-clipboard text-gray-300 text-5xl mb-3"></i>
@@ -681,7 +681,7 @@
             </div>
 
             <div class="bg-white rounded-lg shadow-md overflow-hidden border border-canopy-200">
-                <div class="panel-header bg-gradient-to-r from-canopy-800 to-canopy-600"><i class="fas fa-table-list"></i><span>Ringkasan Detail per Status</span></div>
+                <div class="panel-header bg-gradient-to-r from-canopy-700 to-canopy-500"><i class="fas fa-table-list"></i><span>Ringkasan Detail per Status</span></div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-canopy-50">
