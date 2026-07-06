@@ -517,11 +517,64 @@
                 </button>
             </div>
 
+            <!-- Insight otomatis -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-emerald-500">
+                <h4 class="text-sm font-bold text-gray-700 uppercase tracking-wide mb-3 flex items-center">
+                    <i class="fas fa-wand-magic-sparkles text-emerald-600 mr-2"></i> Ringkasan Insight
+                </h4>
+                <ul id="insightList" class="space-y-2 text-sm text-gray-700">
+                    <li class="flex items-start space-x-2"><i class="fas fa-circle-notch fa-spin text-gray-300 mt-1"></i><span>Menghitung insight...</span></li>
+                </ul>
+            </div>
+
+            <!-- Rasio kawasan konservasi vs target kebijakan -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-green-500">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+                    <h4 class="text-sm font-bold text-gray-700 uppercase tracking-wide flex items-center">
+                        <i class="fas fa-shield-halved text-green-600 mr-2"></i> Rasio Kawasan Konservasi
+                    </h4>
+                    <span class="text-xs text-gray-400">Acuan minimum kebijakan: <b class="text-gray-600">30%</b> dari total luas</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-5 overflow-hidden relative">
+                    <div id="conservationBar" class="h-5 rounded-full transition-all duration-700 flex items-center justify-end pr-2" style="width:0%; background-color:#10b981;">
+                        <span id="conservationPct" class="text-[10px] font-bold text-white"></span>
+                    </div>
+                    <div class="absolute top-0 h-5 border-l-2 border-dashed border-gray-400" style="left:30%;"></div>
+                </div>
+                <p id="conservationNote" class="text-xs text-gray-500 mt-2"></p>
+            </div>
+
+            <!-- Tabel ringkasan detail per status -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="bg-gradient-to-r from-emerald-600 to-green-600 px-6 py-4">
+                    <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+                        <i class="fas fa-table-list"></i> <span>Ringkasan Detail per Status</span>
+                    </h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Jumlah Lahan</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Total Luas (Ha)</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Rata-rata Luas (Ha)</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">% dari Total Luas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody" class="bg-white divide-y divide-gray-200"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-500">
-                    <h4 class="text-lg font-bold text-emerald-900 mb-4 flex items-center">
-                        <i class="fas fa-chart-pie text-emerald-600 mr-2"></i> Proporsi Distribusi Lahan (Ha)
-                    </h4>
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-bold text-emerald-900 flex items-center">
+                            <i class="fas fa-chart-pie text-emerald-600 mr-2"></i> Proporsi Distribusi Lahan (Ha)
+                        </h4>
+                        <button onclick="downloadChart('pieChart','proporsi-distribusi-lahan')" class="no-print text-gray-400 hover:text-emerald-600 transition" title="Unduh grafik"><i class="fas fa-download"></i></button>
+                    </div>
                     <div class="relative" style="height: 300px;">
                         <canvas id="pieChart"></canvas>
                     </div>
@@ -531,9 +584,12 @@
                 </div>
 
                 <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-green-500">
-                    <h4 class="text-lg font-bold text-emerald-900 mb-4 flex items-center">
-                        <i class="fas fa-chart-bar text-green-600 mr-2"></i> Perbandingan Luas Berdasarkan Status
-                    </h4>
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-bold text-emerald-900 flex items-center">
+                            <i class="fas fa-chart-bar text-green-600 mr-2"></i> Perbandingan Luas Berdasarkan Status
+                        </h4>
+                        <button onclick="downloadChart('barChart','perbandingan-luas-status')" class="no-print text-gray-400 hover:text-emerald-600 transition" title="Unduh grafik"><i class="fas fa-download"></i></button>
+                    </div>
                     <div class="relative" style="height: 300px;">
                         <canvas id="barChart"></canvas>
                     </div>
@@ -543,9 +599,12 @@
                 </div>
 
                 <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-teal-500">
-                    <h4 class="text-lg font-bold text-emerald-900 mb-4 flex items-center">
-                        <i class="fas fa-list-ol text-teal-600 mr-2"></i> Jumlah Blok Lahan per Status
-                    </h4>
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-bold text-emerald-900 flex items-center">
+                            <i class="fas fa-list-ol text-teal-600 mr-2"></i> Jumlah Blok Lahan per Status
+                        </h4>
+                        <button onclick="downloadChart('donutChart','jumlah-blok-per-status')" class="no-print text-gray-400 hover:text-emerald-600 transition" title="Unduh grafik"><i class="fas fa-download"></i></button>
+                    </div>
                     <div class="relative" style="height: 300px;">
                         <canvas id="donutChart"></canvas>
                     </div>
@@ -555,14 +614,32 @@
                 </div>
 
                 <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-amber-500">
-                    <h4 class="text-lg font-bold text-emerald-900 mb-4 flex items-center">
-                        <i class="fas fa-ranking-star text-amber-600 mr-2"></i> Top 5 Lahan Terluas
-                    </h4>
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-bold text-emerald-900 flex items-center">
+                            <i class="fas fa-ranking-star text-amber-600 mr-2"></i> Top 5 Lahan Terluas
+                        </h4>
+                        <button onclick="downloadChart('topChart','top-5-lahan-terluas')" class="no-print text-gray-400 hover:text-emerald-600 transition" title="Unduh grafik"><i class="fas fa-download"></i></button>
+                    </div>
                     <div class="relative" style="height: 300px;">
                         <canvas id="topChart"></canvas>
                     </div>
                     <div class="mt-4 text-center bg-amber-50 p-2 rounded-lg">
                         <p class="text-sm text-gray-600">Berdasarkan luas hektar tertinggi saat ini</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-blue-500 lg:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-bold text-emerald-900 flex items-center">
+                            <i class="fas fa-layer-group text-blue-600 mr-2"></i> Distribusi Ukuran Lahan
+                        </h4>
+                        <button onclick="downloadChart('sizeChart','distribusi-ukuran-lahan')" class="no-print text-gray-400 hover:text-emerald-600 transition" title="Unduh grafik"><i class="fas fa-download"></i></button>
+                    </div>
+                    <div class="relative" style="height: 280px;">
+                        <canvas id="sizeChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center bg-blue-50 p-2 rounded-lg">
+                        <p class="text-sm text-gray-600">Kecil &lt; 10 Ha &nbsp;·&nbsp; Sedang 10–50 Ha &nbsp;·&nbsp; Besar &gt; 50 Ha</p>
                     </div>
                 </div>
             </div>
@@ -593,7 +670,7 @@
             nav, #mobileMenu, #flashSuccess, #flashError, #liveClock,
             .filter-card, #noResults, #paginationControls, #paginationInfo,
             .delete-form, td:last-child, th:last-child, .sort-icon,
-            #searchInput, .relative i.fa-search {
+            #searchInput, .relative i.fa-search, .no-print {
                 display: none !important;
             }
 
@@ -902,7 +979,7 @@
         }
 
         // ---------- Charts ----------
-        let pieChart, barChart, donutChart, topChart;
+        let pieChart, barChart, donutChart, topChart, sizeChart;
 
         function initCharts(data) {
             const statusLuas = { Konservasi: 0, Produksi: 0, Reboisasi: 0 };
@@ -976,6 +1053,127 @@
                     scales: { x: { beginAtZero: true } }
                 }
             });
+
+            // Distribusi ukuran lahan (kecil / sedang / besar)
+            const sizeBuckets = { Kecil: 0, Sedang: 0, Besar: 0 };
+            landsData.forEach(l => {
+                const luas = parseFloat(l.luas_hektar);
+                if (luas < 10) sizeBuckets.Kecil++;
+                else if (luas <= 50) sizeBuckets.Sedang++;
+                else sizeBuckets.Besar++;
+            });
+            const sizeCtx = document.getElementById('sizeChart').getContext('2d');
+            if (sizeChart) sizeChart.destroy();
+            sizeChart = new Chart(sizeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Kecil (< 10 Ha)', 'Sedang (10-50 Ha)', 'Besar (> 50 Ha)'],
+                    datasets: [{ label: 'Jumlah Lahan', data: [sizeBuckets.Kecil, sizeBuckets.Sedang, sizeBuckets.Besar], backgroundColor: ['#93c5fd', '#3b82f6', '#1d4ed8'], borderRadius: 6 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+            });
+
+            renderSummaryTable(statusLuas, statusCount, totalLuas);
+            renderConservationRatio(statusLuas, totalLuas);
+            renderInsights(statusLuas, statusCount, totalLuas, totalCount);
+        }
+
+        // ---------- Tabel ringkasan detail per status ----------
+        function renderSummaryTable(statusLuas, statusCount, totalLuas) {
+            const body = document.getElementById('summaryTableBody');
+            if (!body) return;
+            const badgeClass = { Konservasi: 'bg-green-100 text-green-800', Produksi: 'bg-blue-100 text-blue-800', Reboisasi: 'bg-yellow-100 text-yellow-800' };
+            body.innerHTML = '';
+            ['Konservasi', 'Produksi', 'Reboisasi'].forEach(status => {
+                const jumlah = statusCount[status] || 0;
+                const luas = statusLuas[status] || 0;
+                const rata = jumlah > 0 ? luas / jumlah : 0;
+                const pct = totalLuas > 0 ? (luas / totalLuas) * 100 : 0;
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50 transition';
+                tr.innerHTML = `
+                    <td class="px-6 py-3 whitespace-nowrap"><span class="px-3 py-1 rounded-full text-xs font-bold ${badgeClass[status]}">${status}</span></td>
+                    <td class="px-6 py-3 whitespace-nowrap font-semibold text-gray-700">${jumlah}</td>
+                    <td class="px-6 py-3 whitespace-nowrap font-bold text-emerald-700">${luas.toFixed(2)}</td>
+                    <td class="px-6 py-3 whitespace-nowrap text-gray-600">${rata.toFixed(2)}</td>
+                    <td class="px-6 py-3 whitespace-nowrap text-gray-600">${pct.toFixed(1)}%</td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        // ---------- Rasio kawasan konservasi vs target kebijakan ----------
+        function renderConservationRatio(statusLuas, totalLuas) {
+            const bar = document.getElementById('conservationBar');
+            const pctLabel = document.getElementById('conservationPct');
+            const note = document.getElementById('conservationNote');
+            if (!bar) return;
+            const target = 30;
+            const pct = totalLuas > 0 ? (statusLuas.Konservasi / totalLuas) * 100 : 0;
+            const width = Math.min(pct, 100);
+            bar.style.width = width + '%';
+            bar.style.backgroundColor = pct >= target ? '#10b981' : '#f59e0b';
+            pctLabel.textContent = pct.toFixed(1) + '%';
+            if (totalLuas === 0) {
+                note.textContent = 'Belum ada data lahan untuk dihitung.';
+            } else if (pct >= target) {
+                note.innerHTML = `<i class="fas fa-circle-check text-green-600 mr-1"></i> Kawasan konservasi sudah memenuhi acuan minimum ${target}%.`;
+            } else {
+                const kurang = (target - pct) / 100 * totalLuas;
+                note.innerHTML = `<i class="fas fa-triangle-exclamation text-amber-500 mr-1"></i> Masih kurang sekitar <b>${kurang.toFixed(2)} Ha</b> untuk mencapai acuan minimum ${target}%.`;
+            }
+        }
+
+        // ---------- Insight otomatis ----------
+        function renderInsights(statusLuas, statusCount, totalLuas, totalCount) {
+            const list = document.getElementById('insightList');
+            if (!list) return;
+            list.innerHTML = '';
+            const addInsight = (icon, color, text) => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start space-x-2';
+                li.innerHTML = `<i class="fas ${icon} ${color} mt-1"></i><span>${text}</span>`;
+                list.appendChild(li);
+            };
+
+            if (totalCount === 0) {
+                addInsight('fa-circle-info', 'text-gray-400', 'Belum ada data lahan yang bisa dianalisis. Tambahkan data lahan terlebih dahulu.');
+                return;
+            }
+
+            const dominantByLuas = Object.entries(statusLuas).sort((a, b) => b[1] - a[1])[0];
+            const dominantPct = totalLuas > 0 ? (dominantByLuas[1] / totalLuas) * 100 : 0;
+            addInsight('fa-chart-pie', 'text-emerald-600', `Status <b>${dominantByLuas[0]}</b> mendominasi dengan <b>${dominantPct.toFixed(1)}%</b> dari total luas lahan (${dominantByLuas[1].toFixed(2)} Ha).`);
+
+            const sorted = [...landsData].sort((a, b) => parseFloat(b.luas_hektar) - parseFloat(a.luas_hektar));
+            const largest = sorted[0];
+            const smallest = sorted[sorted.length - 1];
+            addInsight('fa-ranking-star', 'text-amber-500', `Lahan terluas adalah <b>${largest.nama_lahan}</b> (${parseFloat(largest.luas_hektar).toFixed(2)} Ha), sedangkan terkecil <b>${smallest.nama_lahan}</b> (${parseFloat(smallest.luas_hektar).toFixed(2)} Ha).`);
+
+            const avg = totalLuas / totalCount;
+            addInsight('fa-balance-scale', 'text-teal-600', `Rata-rata luas per lahan saat ini adalah <b>${avg.toFixed(2)} Ha</b> dari total ${totalCount} blok terdaftar.`);
+
+            const konservasiPct = totalLuas > 0 ? (statusLuas.Konservasi / totalLuas) * 100 : 0;
+            if (konservasiPct < 30) {
+                addInsight('fa-triangle-exclamation', 'text-amber-500', `Proporsi kawasan konservasi baru <b>${konservasiPct.toFixed(1)}%</b>, masih di bawah acuan minimum kebijakan sebesar 30%.`);
+            } else {
+                addInsight('fa-circle-check', 'text-green-600', `Proporsi kawasan konservasi <b>${konservasiPct.toFixed(1)}%</b> sudah memenuhi acuan minimum kebijakan sebesar 30%.`);
+            }
+        }
+
+        // ---------- Download grafik sebagai gambar ----------
+        function downloadChart(canvasId, filename) {
+            const chartMap = { pieChart, barChart, donutChart, topChart, sizeChart };
+            const chartInstance = chartMap[canvasId];
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const url = chartInstance ? chartInstance.toBase64Image() : canvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${filename}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
         // ---------- Wiring ----------
