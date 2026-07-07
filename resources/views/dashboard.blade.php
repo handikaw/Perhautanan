@@ -1427,11 +1427,36 @@
             });
             const labels = Object.keys(byMonth).sort();
             const values = labels.map(l => byMonth[l]);
-            if (produksiChart) produksiChart.destroy();
-            produksiChart = new Chart(canvas.getContext('2d'), {
-                type: 'line',
-                data: { labels: labels.length ? labels : ['-'], datasets: [{ label: 'Total Jumlah Produksi', data: values.length ? values : [0], borderColor: '#4a7343', backgroundColor: 'rgba(74,115,67,0.15)', fill: true, tension: 0.3 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+
+            if (produksiChart) { produksiChart.destroy(); produksiChart = null; }
+
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js belum termuat, cek koneksi ke CDN.');
+                return;
+            }
+
+            // Tunda satu frame agar canvas sudah punya ukuran final (mengatasi
+            // canvas yang masih 0px saat baru pindah tab / baru jadi terlihat).
+            requestAnimationFrame(() => {
+                produksiChart = new Chart(canvas.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: labels.length ? labels : ['Belum ada data'],
+                        datasets: [{
+                            label: 'Total Jumlah Produksi',
+                            data: values.length ? values : [0],
+                            backgroundColor: '#4a7343',
+                            borderRadius: 6,
+                            maxBarThickness: 48
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
             });
         }
 
