@@ -291,7 +291,7 @@
                                     <th class="th-cell cursor-pointer select-none" onclick="setSort('luas_hektar')">Luas (Ha) <i class="fas fa-sort ml-1 text-gray-400 sort-icon" data-sort-key="luas_hektar"></i></th>
                                     <th class="th-cell cursor-pointer select-none" onclick="setSort('status')">Status <i class="fas fa-sort ml-1 text-gray-400 sort-icon" data-sort-key="status"></i></th>
                                     <th class="th-cell">Penanggung Jawab</th>
-                                    <th class="th-cell">Aksi</th>
+                                    <th class="th-cell no-print">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200" id="tableBody">
@@ -308,7 +308,7 @@
                                             <span class="status-badge status-{{ $land->status }}">{{ $land->status }}</span>
                                         </td>
                                         <td class="td-cell text-sm text-gray-500" data-pic-for="{{ $land->id }}">&mdash;</td>
-                                        <td class="td-cell">
+                                        <td class="td-cell no-print">
                                             <div class="flex items-center space-x-2">
                                                 <a href="{{ route('forest.edit', $land->id) }}" class="action-btn bg-resin-500 hover:bg-resin-600" title="Edit lahan"><i class="fas fa-pen"></i></a>
                                                 <form action="{{ route('forest.destroy', $land->id) }}" method="POST" class="inline delete-form">
@@ -473,10 +473,13 @@
 
         <!-- ============ KEGIATAN LAHAN PAGE ============ -->
         <section id="page-kegiatan" class="page-section hidden space-y-6">
-            <div class="border-b border-canopy-100 pb-5">
-                <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Buku Lapangan</p>
-                <h2 class="text-3xl font-display font-semibold text-canopy-900">Kegiatan &amp; Riwayat Lahan</h2>
-                <p class="text-gray-600 mt-1">Catat penanaman, pemeliharaan, penebangan, panen, dan inspeksi setiap blok lahan</p>
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-100 pb-5">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Buku Lapangan</p>
+                    <h2 class="text-3xl font-display font-semibold text-canopy-900">Kegiatan &amp; Riwayat Lahan</h2>
+                    <p class="text-gray-600 mt-1">Catat penanaman, pemeliharaan, penebangan, panen, dan inspeksi setiap blok lahan</p>
+                </div>
+                <button onclick="printPage()" class="no-print btn-outline-neutral self-start"><i class="fas fa-print"></i><span>Cetak</span></button>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -516,7 +519,10 @@
                             <label class="field-label text-sm font-semibold">Catatan</label>
                             <textarea id="k_catatan" rows="3" placeholder="Detail kegiatan di lapangan..." class="field-input"></textarea>
                         </div>
-                        <button type="submit" class="btn-primary w-full justify-center"><i class="fas fa-save"></i><span>Simpan Kegiatan</span></button>
+                        <div class="space-y-2">
+                            <button type="submit" id="kegiatanSubmitBtn" class="btn-primary w-full justify-center"><i class="fas fa-save"></i><span>Simpan Kegiatan</span></button>
+                            <button type="button" id="kegiatanCancelBtn" onclick="cancelEditKegiatan()" class="hidden w-full text-center text-sm text-gray-500 hover:text-clay-600 underline">Batal edit kegiatan</button>
+                        </div>
                     </form>
                 </div>
 
@@ -549,10 +555,13 @@
 
         <!-- ============ PRODUKSI HASIL HUTAN PAGE ============ -->
         <section id="page-produksi" class="page-section hidden space-y-6">
-            <div class="border-b border-canopy-100 pb-5">
-                <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Buku Hasil Hutan</p>
-                <h2 class="text-3xl font-display font-semibold text-canopy-900">Produksi Hasil Hutan</h2>
-                <p class="text-gray-600 mt-1">Catat dan pantau hasil kayu, getah, dan komoditas hutan lainnya per lahan</p>
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-100 pb-5">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Buku Hasil Hutan</p>
+                    <h2 class="text-3xl font-display font-semibold text-canopy-900">Produksi Hasil Hutan</h2>
+                    <p class="text-gray-600 mt-1">Catat dan pantau hasil kayu, getah, dan komoditas hutan lainnya per lahan</p>
+                </div>
+                <button onclick="printPage()" class="no-print btn-outline-neutral self-start"><i class="fas fa-print"></i><span>Cetak</span></button>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -604,7 +613,10 @@
                             <label class="field-label text-sm font-semibold">Catatan</label>
                             <textarea id="p_catatan" rows="2" placeholder="Kualitas, tujuan distribusi, dsb." class="field-input"></textarea>
                         </div>
-                        <button type="submit" class="btn-primary w-full justify-center bg-bark-600 hover:bg-bark-700"><i class="fas fa-save"></i><span>Simpan Produksi</span></button>
+                        <div class="space-y-2">
+                            <button type="submit" id="produksiSubmitBtn" class="btn-primary w-full justify-center bg-bark-600 hover:bg-bark-700"><i class="fas fa-save"></i><span>Simpan Produksi</span></button>
+                            <button type="button" id="produksiCancelBtn" onclick="cancelEditProduksi()" class="hidden w-full text-center text-sm text-gray-500 hover:text-clay-600 underline">Batal edit produksi</button>
+                        </div>
                     </form>
                 </div>
 
@@ -630,7 +642,7 @@
                                         <th class="th-cell">Lahan</th>
                                         <th class="th-cell">Komoditas</th>
                                         <th class="th-cell">Jumlah</th>
-                                        <th class="th-cell">Aksi</th>
+                                        <th class="th-cell no-print">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="produksiTableBody" class="bg-white divide-y divide-gray-200"></tbody>
@@ -805,7 +817,7 @@
         @media print {
             nav, #mobileMenu, #flashSuccess, #flashError, #liveClock, #dataNotice,
             .filter-card, #noResults, #paginationControls, #paginationInfo,
-            .delete-form, td:last-child, th:last-child, .sort-icon,
+            .delete-form, .sort-icon,
             #searchInput, .relative i.fa-search, .no-print {
                 display: none !important;
             }
@@ -1137,13 +1149,14 @@
         }
 
         // ---------- Kegiatan ----------
+        let editingKegiatanId = null;
+
         function submitKegiatan(e) {
             e.preventDefault();
             const lahanSelect = document.getElementById('k_lahan');
             const lahanId = lahanSelect.value;
             const lahanNama = lahanSelect.options[lahanSelect.selectedIndex]?.text || '';
-            const entry = {
-                id: 'k' + Date.now(),
+            const payload = {
                 lahan_id: lahanId, lahan_nama: lahanNama,
                 jenis: document.getElementById('k_jenis').value,
                 tanggal: document.getElementById('k_tanggal').value,
@@ -1151,15 +1164,54 @@
                 petugas: document.getElementById('k_petugas').value,
                 catatan: document.getElementById('k_catatan').value
             };
-            const arr = loadKegiatan();
-            arr.unshift(entry);
+
+            let arr = loadKegiatan();
+            let successMsg = 'Kegiatan tercatat';
+            if (editingKegiatanId) {
+                arr = arr.map(k => k.id === editingKegiatanId ? { id: editingKegiatanId, ...payload } : k);
+                successMsg = 'Kegiatan diperbarui';
+                cancelEditKegiatan(false);
+            } else {
+                arr.unshift({ id: 'k' + Date.now(), ...payload });
+            }
             saveKegiatan(arr);
             document.getElementById('kegiatanForm').reset();
+            const todayIso = new Date().toISOString().slice(0, 10);
+            const kTanggal = document.getElementById('k_tanggal'); if (kTanggal) kTanggal.value = todayIso;
             renderKegiatanList();
             renderReminders();
             renderRecentActivity();
-            Swal.fire({ icon: 'success', title: 'Kegiatan tercatat', timer: 1400, showConfirmButton: false });
+            Swal.fire({ icon: 'success', title: successMsg, timer: 1400, showConfirmButton: false });
             return false;
+        }
+
+        function editKegiatan(id) {
+            const k = loadKegiatan().find(x => x.id === id);
+            if (!k) return;
+            populateLahanSelects();
+            document.getElementById('k_lahan').value = k.lahan_id;
+            document.getElementById('k_jenis').value = k.jenis;
+            document.getElementById('k_tanggal').value = k.tanggal;
+            document.getElementById('k_tindaklanjut').value = k.tindaklanjut || '';
+            document.getElementById('k_petugas').value = k.petugas;
+            document.getElementById('k_catatan').value = k.catatan || '';
+            editingKegiatanId = id;
+            const btn = document.getElementById('kegiatanSubmitBtn');
+            if (btn) btn.innerHTML = '<i class="fas fa-rotate"></i><span>Perbarui Kegiatan</span>';
+            document.getElementById('kegiatanCancelBtn')?.classList.remove('hidden');
+            document.getElementById('kegiatanForm')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function cancelEditKegiatan(doReset = true) {
+            editingKegiatanId = null;
+            const btn = document.getElementById('kegiatanSubmitBtn');
+            if (btn) btn.innerHTML = '<i class="fas fa-save"></i><span>Simpan Kegiatan</span>';
+            document.getElementById('kegiatanCancelBtn')?.classList.add('hidden');
+            if (doReset) {
+                document.getElementById('kegiatanForm')?.reset();
+                const todayIso = new Date().toISOString().slice(0, 10);
+                const kTanggal = document.getElementById('k_tanggal'); if (kTanggal) kTanggal.value = todayIso;
+            }
         }
 
         const kegiatanIconMap = { Penanaman: 'fa-seedling', Pemeliharaan: 'fa-broom', Penebangan: 'fa-axe', Panen: 'fa-basket-shopping', Inspeksi: 'fa-magnifying-glass', Lainnya: 'fa-note-sticky' };
@@ -1193,7 +1245,10 @@
                         <p class="text-sm text-gray-600 mt-0.5">${escapeHtml(k.lahan_nama)} &middot; ${escapeHtml(k.petugas)}</p>
                         ${k.catatan ? `<p class="text-xs text-gray-500 mt-1">${escapeHtml(k.catatan)}</p>` : ''}
                     </div>
-                    <button onclick="deleteKegiatan('${k.id}')" class="text-gray-300 hover:text-clay-500 transition" title="Hapus" aria-label="Hapus kegiatan"><i class="fas fa-trash-alt"></i></button>
+                    <div class="flex items-center gap-2 no-print shrink-0">
+                        <button onclick="editKegiatan('${k.id}')" class="text-gray-300 hover:text-canopy-600 transition" title="Edit" aria-label="Edit kegiatan"><i class="fas fa-pen"></i></button>
+                        <button onclick="deleteKegiatan('${k.id}')" class="text-gray-300 hover:text-clay-500 transition" title="Hapus" aria-label="Hapus kegiatan"><i class="fas fa-trash-alt"></i></button>
+                    </div>
                 `;
                 list.appendChild(row);
             });
@@ -1215,6 +1270,8 @@
         }
 
         // ---------- Produksi ----------
+        let editingProduksiId = null;
+
         function submitProduksi(e) {
             e.preventDefault();
             const lahanSelect = document.getElementById('p_lahan');
@@ -1225,8 +1282,7 @@
                 Swal.fire('Jumlah tidak valid', 'Masukkan jumlah produksi lebih besar dari 0.', 'error');
                 return false;
             }
-            const entry = {
-                id: 'p' + Date.now(),
+            const payload = {
                 lahan_id: lahanId, lahan_nama: lahanNama,
                 komoditas: document.getElementById('p_komoditas').value,
                 jumlah: jumlahVal,
@@ -1234,13 +1290,52 @@
                 tanggal: document.getElementById('p_tanggal').value,
                 catatan: document.getElementById('p_catatan').value
             };
-            const arr = loadProduksi();
-            arr.unshift(entry);
+
+            let arr = loadProduksi();
+            let successMsg = 'Produksi tercatat';
+            if (editingProduksiId) {
+                arr = arr.map(p => p.id === editingProduksiId ? { id: editingProduksiId, ...payload } : p);
+                successMsg = 'Produksi diperbarui';
+                cancelEditProduksi(false);
+            } else {
+                arr.unshift({ id: 'p' + Date.now(), ...payload });
+            }
             saveProduksi(arr);
             document.getElementById('produksiForm').reset();
+            const todayIso = new Date().toISOString().slice(0, 10);
+            const pTanggal = document.getElementById('p_tanggal'); if (pTanggal) pTanggal.value = todayIso;
             renderProduksiAll();
-            Swal.fire({ icon: 'success', title: 'Produksi tercatat', timer: 1400, showConfirmButton: false });
+            Swal.fire({ icon: 'success', title: successMsg, timer: 1400, showConfirmButton: false });
             return false;
+        }
+
+        function editProduksi(id) {
+            const p = loadProduksi().find(x => x.id === id);
+            if (!p) return;
+            populateLahanSelects();
+            document.getElementById('p_lahan').value = p.lahan_id;
+            document.getElementById('p_komoditas').value = p.komoditas;
+            document.getElementById('p_jumlah').value = p.jumlah;
+            document.getElementById('p_satuan').value = p.satuan;
+            document.getElementById('p_tanggal').value = p.tanggal;
+            document.getElementById('p_catatan').value = p.catatan || '';
+            editingProduksiId = id;
+            const btn = document.getElementById('produksiSubmitBtn');
+            if (btn) btn.innerHTML = '<i class="fas fa-rotate"></i><span>Perbarui Produksi</span>';
+            document.getElementById('produksiCancelBtn')?.classList.remove('hidden');
+            document.getElementById('produksiForm')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function cancelEditProduksi(doReset = true) {
+            editingProduksiId = null;
+            const btn = document.getElementById('produksiSubmitBtn');
+            if (btn) btn.innerHTML = '<i class="fas fa-save"></i><span>Simpan Produksi</span>';
+            document.getElementById('produksiCancelBtn')?.classList.add('hidden');
+            if (doReset) {
+                document.getElementById('produksiForm')?.reset();
+                const todayIso = new Date().toISOString().slice(0, 10);
+                const pTanggal = document.getElementById('p_tanggal'); if (pTanggal) pTanggal.value = todayIso;
+            }
         }
 
         function deleteProduksi(id) {
@@ -1263,7 +1358,12 @@
                         <td class="td-cell text-sm text-gray-800">${escapeHtml(p.lahan_nama)}</td>
                         <td class="td-cell text-sm text-gray-800">${escapeHtml(p.komoditas)}</td>
                         <td class="td-cell font-mono font-bold text-bark-600">${p.jumlah} ${satuanLabel(p.satuan)}</td>
-                        <td class="td-cell"><button onclick="deleteProduksi('${p.id}')" class="action-btn bg-clay-500 hover:bg-clay-600" aria-label="Hapus produksi"><i class="fas fa-trash-alt"></i></button></td>
+                        <td class="td-cell no-print">
+                            <div class="flex items-center gap-2">
+                                <button onclick="editProduksi('${p.id}')" class="action-btn bg-resin-500 hover:bg-resin-600" aria-label="Edit produksi"><i class="fas fa-pen"></i></button>
+                                <button onclick="deleteProduksi('${p.id}')" class="action-btn bg-clay-500 hover:bg-clay-600" aria-label="Hapus produksi"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
