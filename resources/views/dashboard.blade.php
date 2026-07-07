@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Perhutani &middot; Buku Catatan Manajemen Lahan</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -138,10 +139,6 @@
                 <div class="absolute bottom-0 left-0 h-1 bg-clay-500" id="flashErrorBar" style="width:100%"></div>
             </div>
         @endif
-        <div id="dataNotice" class="hidden bg-bark-100 border-l-4 border-bark-500 text-bark-700 p-3 rounded-md text-xs flex items-start space-x-2">
-            <i class="fas fa-circle-info mt-0.5"></i>
-            <span>Data kegiatan &amp; produksi disimpan secara lokal di perangkat ini untuk pencatatan cepat. Hubungi pengembang untuk menyambungkannya ke database pusat agar dapat diakses semua petugas.</span>
-        </div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -815,7 +812,7 @@
         }
 
         @media print {
-            nav, #mobileMenu, #flashSuccess, #flashError, #liveClock, #dataNotice,
+            nav, #mobileMenu, #flashSuccess, #flashError, #liveClock,
             .filter-card, #noResults, #paginationControls, #paginationInfo,
             .delete-form, .sort-icon,
             #searchInput, .relative i.fa-search, .no-print {
@@ -835,7 +832,7 @@
         // ================= Navigation =================
         const ALL_TABS = ['dashboard', 'tambah-lahan', 'kegiatan', 'produksi', 'analisis'];
 
-        function switchPage(pageId) {
+        async function switchPage(pageId) {
             document.querySelectorAll('.page-section').forEach(section => section.classList.add('hidden'));
             document.getElementById(`page-${pageId}`).classList.remove('hidden');
 
@@ -846,10 +843,10 @@
             document.getElementById(`tab-${pageId}`)?.classList.add('active-tab');
             document.getElementById(`mtab-${pageId}`)?.classList.add('active-tab');
 
-            if (pageId === 'analisis') initCharts();
-            if (pageId === 'kegiatan') { populateLahanSelects(); renderKegiatanList(); }
-            if (pageId === 'produksi') { populateLahanSelects(); renderProduksiAll(); }
-            if (pageId === 'dashboard') { renderReminders(); renderRecentActivity(); updateDashboardKpis(); }
+            if (pageId === 'analisis') { await fetchKegiatan(); initCharts(); }
+            if (pageId === 'kegiatan') { populateLahanSelects(); await fetchKegiatan(); renderKegiatanList(); }
+            if (pageId === 'produksi') { populateLahanSelects(); await fetchProduksi(); renderProduksiAll(); }
+            if (pageId === 'dashboard') { await fetchKegiatan(); renderReminders(); renderRecentActivity(); updateDashboardKpis(); }
         }
 
         function toggleMobileMenu() {
@@ -1107,35 +1104,48 @@
             URL.revokeObjectURL(url);
         }
 
-        // ================= Local storage: Kegiatan & Produksi =================
-        const LS_KEGIATAN = 'perhutani_kegiatan_v1';
-        const LS_PRODUKSI = 'perhutani_produksi_v1';
+        // ================= Backend data: Kegiatan & Produksi =================
+        const routes = {
+            kegiatanIndex: "{{ route('kegiatan.index') }}",
+            kegiatanStore: "{{ route('kegiatan.store') }}",
+            kegiatanUpdate: (id) => `{{ url('/kegiatan') }}/${id}`,
+            kegiatanDestroy: (id) => `{{ url('/kegiatan') }}/${id}`,
+            produksiIndex: "{{ route('produksi.index') }}",
+            produksiStore: "{{ route('produksi.store') }}",
+            produksiUpdate: (id) => `{{ url('/produksi') }}/${id}`,
+            produksiDestroy: (id) => `{{ url('/produksi') }}/${id}`,
+        };
 
-        function loadKegiatan() { try { return JSON.parse(localStorage.getItem(LS_KEGIATAN) || '[]'); } catch(e) { return []; } }
-        function saveKegiatan(arr) { localStorage.setItem(LS_KEGIATAN, JSON.stringify(arr)); }
-        function loadProduksi() { try { return JSON.parse(localStorage.getItem(LS_PRODUKSI) || '[]'); } catch(e) { return []; } }
-        function saveProduksi(arr) { localStorage.setItem(LS_PRODUKSI, JSON.stringify(arr)); }
+        function csrfToken() {
+            return document.querySelector('meta[name="csrf-token"]')?.content || '';
+        }
 
-        function seedDemoDataIfEmpty() {
-            if (landsData.length === 0) return;
-            if (loadKegiatan().length === 0) {
-                const today = new Date();
-                const iso = (d) => d.toISOString().slice(0, 10);
-                const demo = [
-                    { id: 'k1', lahan_id: landsData[0].id, lahan_nama: landsData[0].nama_lahan, jenis: 'Penanaman', tanggal: iso(new Date(today.getFullYear(), today.getMonth() - 2, 10)), petugas: 'Mantri Hutan - Suryadi', tindaklanjut: iso(new Date(today.getFullYear(), today.getMonth(), 15)), catatan: 'Penanaman bibit jati tahap awal musim hujan.' },
-                    { id: 'k2', lahan_id: landsData[0].id, lahan_nama: landsData[0].nama_lahan, jenis: 'Inspeksi', tanggal: iso(new Date(today.getFullYear(), today.getMonth() - 1, 3)), petugas: 'Petugas Lapangan - Rina', tindaklanjut: '', catatan: 'Kondisi tanaman baik, tidak ditemukan hama.' }
-                ];
-                saveKegiatan(demo);
+        async function apiFetch(url, options = {}) {
+            const headers = Object.assign({ 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken() }, options.headers || {});
+            if (options.body && !(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
+            const res = await fetch(url, { ...options, headers });
+            if (!res.ok) {
+                let msg = 'Permintaan gagal diproses.';
+                try { const err = await res.json(); msg = err.message || msg; } catch (e) { /* ignore */ }
+                throw new Error(msg);
             }
-            if (loadProduksi().length === 0 && landsData.length > 0) {
-                const today = new Date();
-                const iso = (d) => d.toISOString().slice(0, 10);
-                const demo = [
-                    { id: 'p1', lahan_id: landsData[0].id, lahan_nama: landsData[0].nama_lahan, komoditas: 'Kayu Jati', jumlah: 12.5, satuan: 'm3', tanggal: iso(new Date(today.getFullYear(), today.getMonth() - 2, 20)), catatan: 'Hasil tebang pilih.' },
-                    { id: 'p2', lahan_id: landsData[0].id, lahan_nama: landsData[0].nama_lahan, komoditas: 'Getah Pinus', jumlah: 340, satuan: 'kg', tanggal: iso(new Date(today.getFullYear(), today.getMonth() - 1, 5)), catatan: 'Penyadapan rutin bulanan.' }
-                ];
-                saveProduksi(demo);
-            }
+            if (res.status === 204) return null;
+            return res.json();
+        }
+
+        let kegiatanCache = [];
+        let produksiCache = [];
+
+        function loadKegiatan() { return kegiatanCache; }
+        function loadProduksi() { return produksiCache; }
+
+        async function fetchKegiatan() {
+            try { kegiatanCache = await apiFetch(routes.kegiatanIndex); }
+            catch (err) { console.error(err); Swal.fire('Gagal memuat', 'Tidak bisa mengambil data kegiatan dari server.', 'error'); }
+        }
+        async function fetchProduksi() {
+            try { produksiCache = await apiFetch(routes.produksiIndex); }
+            catch (err) { console.error(err); Swal.fire('Gagal memuat', 'Tidak bisa mengambil data produksi dari server.', 'error'); }
         }
 
         function populateLahanSelects() {
@@ -1151,42 +1161,42 @@
         // ---------- Kegiatan ----------
         let editingKegiatanId = null;
 
-        function submitKegiatan(e) {
+        async function submitKegiatan(e) {
             e.preventDefault();
             const lahanSelect = document.getElementById('k_lahan');
-            const lahanId = lahanSelect.value;
-            const lahanNama = lahanSelect.options[lahanSelect.selectedIndex]?.text || '';
             const payload = {
-                lahan_id: lahanId, lahan_nama: lahanNama,
+                forest_land_id: lahanSelect.value,
                 jenis: document.getElementById('k_jenis').value,
                 tanggal: document.getElementById('k_tanggal').value,
-                tindaklanjut: document.getElementById('k_tindaklanjut').value,
+                tindak_lanjut: document.getElementById('k_tindaklanjut').value || null,
                 petugas: document.getElementById('k_petugas').value,
-                catatan: document.getElementById('k_catatan').value
+                catatan: document.getElementById('k_catatan').value || null
             };
 
-            let arr = loadKegiatan();
-            let successMsg = 'Kegiatan tercatat';
-            if (editingKegiatanId) {
-                arr = arr.map(k => k.id === editingKegiatanId ? { id: editingKegiatanId, ...payload } : k);
-                successMsg = 'Kegiatan diperbarui';
-                cancelEditKegiatan(false);
-            } else {
-                arr.unshift({ id: 'k' + Date.now(), ...payload });
+            try {
+                if (editingKegiatanId) {
+                    await apiFetch(routes.kegiatanUpdate(editingKegiatanId), { method: 'PUT', body: JSON.stringify(payload) });
+                    cancelEditKegiatan(false);
+                    Swal.fire({ icon: 'success', title: 'Kegiatan diperbarui', timer: 1400, showConfirmButton: false });
+                } else {
+                    await apiFetch(routes.kegiatanStore, { method: 'POST', body: JSON.stringify(payload) });
+                    Swal.fire({ icon: 'success', title: 'Kegiatan tercatat', timer: 1400, showConfirmButton: false });
+                }
+                document.getElementById('kegiatanForm').reset();
+                const todayIso = new Date().toISOString().slice(0, 10);
+                const kTanggal = document.getElementById('k_tanggal'); if (kTanggal) kTanggal.value = todayIso;
+                await fetchKegiatan();
+                renderKegiatanList();
+                renderReminders();
+                renderRecentActivity();
+            } catch (err) {
+                Swal.fire('Gagal menyimpan', err.message, 'error');
             }
-            saveKegiatan(arr);
-            document.getElementById('kegiatanForm').reset();
-            const todayIso = new Date().toISOString().slice(0, 10);
-            const kTanggal = document.getElementById('k_tanggal'); if (kTanggal) kTanggal.value = todayIso;
-            renderKegiatanList();
-            renderReminders();
-            renderRecentActivity();
-            Swal.fire({ icon: 'success', title: successMsg, timer: 1400, showConfirmButton: false });
             return false;
         }
 
         function editKegiatan(id) {
-            const k = loadKegiatan().find(x => x.id === id);
+            const k = loadKegiatan().find(x => String(x.id) === String(id));
             if (!k) return;
             populateLahanSelects();
             document.getElementById('k_lahan').value = k.lahan_id;
@@ -1254,11 +1264,22 @@
             });
         }
 
-        function deleteKegiatan(id) {
-            saveKegiatan(loadKegiatan().filter(k => k.id !== id));
-            renderKegiatanList();
-            renderReminders();
-            renderRecentActivity();
+        async function deleteKegiatan(id) {
+            const result = await Swal.fire({
+                title: 'Hapus kegiatan ini?', text: 'Data yang sudah dihapus tidak dapat dikembalikan.', icon: 'warning',
+                showCancelButton: true, confirmButtonColor: '#b3462c', cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, hapus', cancelButtonText: 'Batal'
+            });
+            if (!result.isConfirmed) return;
+            try {
+                await apiFetch(routes.kegiatanDestroy(id), { method: 'DELETE' });
+                await fetchKegiatan();
+                renderKegiatanList();
+                renderReminders();
+                renderRecentActivity();
+            } catch (err) {
+                Swal.fire('Gagal menghapus', err.message, 'error');
+            }
         }
 
         function exportKegiatanCSV() {
@@ -1272,45 +1293,45 @@
         // ---------- Produksi ----------
         let editingProduksiId = null;
 
-        function submitProduksi(e) {
+        async function submitProduksi(e) {
             e.preventDefault();
             const lahanSelect = document.getElementById('p_lahan');
-            const lahanId = lahanSelect.value;
-            const lahanNama = lahanSelect.options[lahanSelect.selectedIndex]?.text || '';
             const jumlahVal = parseFloat(document.getElementById('p_jumlah').value);
             if (isNaN(jumlahVal) || jumlahVal <= 0) {
                 Swal.fire('Jumlah tidak valid', 'Masukkan jumlah produksi lebih besar dari 0.', 'error');
                 return false;
             }
             const payload = {
-                lahan_id: lahanId, lahan_nama: lahanNama,
+                forest_land_id: lahanSelect.value,
                 komoditas: document.getElementById('p_komoditas').value,
                 jumlah: jumlahVal,
                 satuan: document.getElementById('p_satuan').value,
                 tanggal: document.getElementById('p_tanggal').value,
-                catatan: document.getElementById('p_catatan').value
+                catatan: document.getElementById('p_catatan').value || null
             };
 
-            let arr = loadProduksi();
-            let successMsg = 'Produksi tercatat';
-            if (editingProduksiId) {
-                arr = arr.map(p => p.id === editingProduksiId ? { id: editingProduksiId, ...payload } : p);
-                successMsg = 'Produksi diperbarui';
-                cancelEditProduksi(false);
-            } else {
-                arr.unshift({ id: 'p' + Date.now(), ...payload });
+            try {
+                if (editingProduksiId) {
+                    await apiFetch(routes.produksiUpdate(editingProduksiId), { method: 'PUT', body: JSON.stringify(payload) });
+                    cancelEditProduksi(false);
+                    Swal.fire({ icon: 'success', title: 'Produksi diperbarui', timer: 1400, showConfirmButton: false });
+                } else {
+                    await apiFetch(routes.produksiStore, { method: 'POST', body: JSON.stringify(payload) });
+                    Swal.fire({ icon: 'success', title: 'Produksi tercatat', timer: 1400, showConfirmButton: false });
+                }
+                document.getElementById('produksiForm').reset();
+                const todayIso = new Date().toISOString().slice(0, 10);
+                const pTanggal = document.getElementById('p_tanggal'); if (pTanggal) pTanggal.value = todayIso;
+                await fetchProduksi();
+                renderProduksiAll();
+            } catch (err) {
+                Swal.fire('Gagal menyimpan', err.message, 'error');
             }
-            saveProduksi(arr);
-            document.getElementById('produksiForm').reset();
-            const todayIso = new Date().toISOString().slice(0, 10);
-            const pTanggal = document.getElementById('p_tanggal'); if (pTanggal) pTanggal.value = todayIso;
-            renderProduksiAll();
-            Swal.fire({ icon: 'success', title: successMsg, timer: 1400, showConfirmButton: false });
             return false;
         }
 
         function editProduksi(id) {
-            const p = loadProduksi().find(x => x.id === id);
+            const p = loadProduksi().find(x => String(x.id) === String(id));
             if (!p) return;
             populateLahanSelects();
             document.getElementById('p_lahan').value = p.lahan_id;
@@ -1338,9 +1359,20 @@
             }
         }
 
-        function deleteProduksi(id) {
-            saveProduksi(loadProduksi().filter(p => p.id !== id));
-            renderProduksiAll();
+        async function deleteProduksi(id) {
+            const result = await Swal.fire({
+                title: 'Hapus data produksi ini?', text: 'Data yang sudah dihapus tidak dapat dikembalikan.', icon: 'warning',
+                showCancelButton: true, confirmButtonColor: '#b3462c', cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, hapus', cancelButtonText: 'Batal'
+            });
+            if (!result.isConfirmed) return;
+            try {
+                await apiFetch(routes.produksiDestroy(id), { method: 'DELETE' });
+                await fetchProduksi();
+                renderProduksiAll();
+            } catch (err) {
+                Swal.fire('Gagal menghapus', err.message, 'error');
+            }
         }
 
         function renderProduksiAll() {
@@ -1640,7 +1672,7 @@
             if (e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); document.getElementById('searchInput')?.focus(); }
         });
 
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('tab-dashboard')?.classList.add('active-tab');
             document.getElementById('mtab-dashboard')?.classList.add('active-tab');
             document.querySelector('.chip-btn[data-chip="all"]')?.classList.add('chip-active');
@@ -1649,13 +1681,12 @@
             const kTanggal = document.getElementById('k_tanggal'); if (kTanggal) kTanggal.value = todayIso;
             const pTanggal = document.getElementById('p_tanggal'); if (pTanggal) pTanggal.value = todayIso;
 
-            seedDemoDataIfEmpty();
             applyFilters();
             updateDashboardKpis();
+
+            await fetchKegiatan();
             renderReminders();
             renderRecentActivity();
-
-            if (loadKegiatan().length > 0 || loadProduksi().length > 0) document.getElementById('dataNotice')?.classList.remove('hidden');
         });
     </script>
 </body>
