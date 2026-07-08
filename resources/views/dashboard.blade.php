@@ -12,15 +12,17 @@
             theme: {
                 extend: {
                     colors: {
-                        /* Tema hijau menyeluruh: canopy = hijau utama, bark = hijau moss (pengganti coklat),
-                           resin = hijau lime/aksen (pengganti emas), clay = merah dipertahankan khusus
-                           untuk aksi bahaya/hapus & error demi kejelasan UX (konvensi universal). */
-                        canopy: { 50:'#eef2ed', 100:'#d8e3d7', 300:'#7ea888', 500:'#3f7a5c', 600:'#2f6349', 700:'#234d38', 800:'#1f4d3d', 900:'#152e24' },
-                        bark:   { 100:'#e7f0e3', 300:'#a9cba0', 500:'#5e8f57', 600:'#4a7343', 700:'#385a33' },
-                        resin:  { 100:'#eef5da', 300:'#bfdc7e', 500:'#8bae35', 600:'#6f8f28', 700:'#556e1e' },
-                        clay:   { 100:'#f3ded6', 500:'#b3462c', 600:'#93381f' },
-                        mist:   '#f1f4f0',
-                        ink:    '#1c2621'
+                        /* Palet buku lapangan hutan — bukan "tema hijau serba hijau", tapi warna
+                           yang benar-benar ada di rimba: canopy = hijau tajuk pohon (warna utama),
+                           bark = coklat kulit kayu (netral/sekunder), resin = kuning getah damar
+                           (aksen, dipakai sangat terbatas), clay = merah tanah liat (khusus bahaya/hapus),
+                           mist = krem kertas lapangan yang sudah lapuk, ink = coklat-hitam tinta pena. */
+                        canopy: { 50:'#eef1ea', 100:'#dbe2d0', 300:'#93aa7c', 500:'#4b6b3f', 600:'#3a5730', 700:'#2c4526', 800:'#22371e', 900:'#182818' },
+                        bark:   { 100:'#ece1d3', 300:'#c3a688', 500:'#8a6242', 600:'#6f4d33', 700:'#573c28' },
+                        resin:  { 100:'#f1e4c0', 300:'#dcbb6c', 500:'#b8862f', 600:'#976c22', 700:'#7a561b' },
+                        clay:   { 100:'#ecdcd0', 500:'#a1462a', 600:'#833a22' },
+                        mist:   '#f4efe3',
+                        ink:    '#26211a'
                     },
                     fontFamily: {
                         display: ['"Fraunces"', 'serif'],
@@ -37,23 +39,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="bg-mist min-h-screen font-body text-ink">
+<body class="bg-mist min-h-screen font-body text-ink" style="background-image:radial-gradient(rgba(38,33,26,0.05) 1px, transparent 1px); background-size: 20px 20px;">
 
     <!-- ============ NAVBAR ============ -->
-    <nav class="bg-canopy-900 shadow-lg sticky top-0 z-50 border-b-4 border-resin-500">
+    <nav class="bg-canopy-900 shadow-sm sticky top-0 z-50 border-b border-bark-500/40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchPage('dashboard')">
-                    <div class="bg-resin-500 group-hover:bg-resin-600 transition p-2 rounded-md">
-                        <i class="fas fa-tree text-canopy-900 text-xl"></i>
+                    <div class="w-10 h-10 rounded-full border-2 border-resin-500/70 flex items-center justify-center group-hover:border-resin-400 transition">
+                        <i class="fas fa-tree text-resin-500 text-base"></i>
                     </div>
                     <div class="leading-tight">
                         <h1 class="text-xl font-display font-semibold text-white tracking-wide">Perhutani</h1>
-                        <p class="text-[11px] text-canopy-100 tracking-widest uppercase">Buku Catatan Lahan &amp; Hasil Hutan</p>
+                        <p class="text-[11px] text-canopy-300 tracking-wide">Buku Catatan Lahan &amp; Hasil Hutan</p>
                     </div>
                 </div>
 
-                <div class="hidden lg:flex space-x-1 bg-canopy-800/60 p-1 rounded-lg">
+                <div class="hidden lg:flex space-x-1 bg-canopy-800/60 p-1 rounded-md">
                     <button id="tab-dashboard" onclick="switchPage('dashboard')" class="nav-tab-btn"><i class="fas fa-house"></i><span>Dashboard</span></button>
                     <button id="tab-tambah-lahan" onclick="switchPage('tambah-lahan')" class="nav-tab-btn"><i class="fas fa-plus"></i><span>Tambah Lahan</span></button>
                     <button id="tab-kegiatan" onclick="switchPage('kegiatan')" class="nav-tab-btn"><i class="fas fa-clipboard-list"></i><span>Kegiatan Lahan</span></button>
@@ -70,18 +72,18 @@
                 <div class="hidden lg:flex items-center space-x-4">
                     <div class="flex items-center space-x-3 text-canopy-50">
                         @if(Auth::check() && Auth::user()->profile_photo)
-                            <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile" class="h-9 w-9 rounded-full object-cover border-2 border-resin-400">
+                            <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile" class="h-9 w-9 rounded-full object-cover border border-canopy-700">
                         @else
-                            <i class="fas fa-user-circle text-3xl text-canopy-100"></i>
+                            <i class="fas fa-user-circle text-3xl text-canopy-300"></i>
                         @endif
                         <div class="flex flex-col">
                             <span class="text-sm font-medium text-white">{{ Auth::check() ? Auth::user()->name : 'Admin User' }}</span>
-                            <a href="{{ route('profile.edit') }}" class="text-xs text-resin-300 hover:text-resin-100 transition">Edit Profil</a>
+                            <a href="{{ route('profile.edit') }}" class="text-xs text-canopy-300 hover:text-resin-400 transition">Edit Profil</a>
                         </div>
                     </div>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="bg-clay-500 hover:bg-clay-600 text-white px-3 py-2 rounded-md text-sm font-medium transition duration-200 flex items-center space-x-2">
+                        <button type="submit" class="border border-clay-500 text-clay-500 hover:bg-clay-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-200 flex items-center space-x-2">
                             <i class="fas fa-right-from-bracket"></i><span>Keluar</span>
                         </button>
                     </form>
@@ -91,7 +93,7 @@
     </nav>
 
     <!-- ============ MOBILE MENU ============ -->
-    <div id="mobileMenu" class="hidden lg:hidden bg-canopy-900 border-b-2 border-resin-500">
+    <div id="mobileMenu" class="hidden lg:hidden bg-canopy-900 border-b border-bark-500/40">
         <div class="max-w-7xl mx-auto px-4 py-4 space-y-1">
             <button id="mtab-dashboard" onclick="switchPage('dashboard'); toggleMobileMenu();" class="mnav-tab-btn"><i class="fas fa-house w-5"></i><span>Dashboard Utama</span></button>
             <button id="mtab-tambah-lahan" onclick="switchPage('tambah-lahan'); toggleMobileMenu();" class="mnav-tab-btn"><i class="fas fa-plus w-5"></i><span>Tambah Lahan</span></button>
@@ -102,19 +104,19 @@
             <div class="border-t border-canopy-700 pt-3 mt-2">
                 <div class="flex items-center space-x-3 px-4 py-2">
                     @if(Auth::check() && Auth::user()->profile_photo)
-                        <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile" class="h-11 w-11 rounded-full object-cover border-2 border-resin-400">
+                        <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile" class="h-11 w-11 rounded-full object-cover border border-canopy-700">
                     @else
-                        <i class="fas fa-user-circle text-4xl text-canopy-100"></i>
+                        <i class="fas fa-user-circle text-4xl text-canopy-300"></i>
                     @endif
                     <div class="flex flex-col">
                         <span class="font-medium text-white">{{ Auth::check() ? Auth::user()->name : 'Admin User' }}</span>
-                        <a href="{{ route('profile.edit') }}" class="text-sm text-resin-300">Edit Profil</a>
+                        <a href="{{ route('profile.edit') }}" class="text-sm text-canopy-300">Edit Profil</a>
                     </div>
                 </div>
             </div>
             <form method="POST" action="{{ route('logout') }}" class="border-t border-canopy-700 pt-2">
                 @csrf
-                <button type="submit" class="block w-full bg-clay-500 hover:bg-clay-600 text-white px-4 py-2.5 rounded-md font-medium text-center">
+                <button type="submit" class="block w-full border border-clay-500 text-clay-500 px-4 py-2.5 rounded-md font-medium text-center">
                     <i class="fas fa-right-from-bracket mr-2"></i> Keluar
                 </button>
             </form>
@@ -124,7 +126,7 @@
     <!-- ============ FLASH MESSAGES ============ -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-3">
         @if(session('success'))
-            <div id="flashSuccess" class="relative overflow-hidden bg-canopy-50 border-l-4 border-canopy-600 text-canopy-800 p-4 rounded-md shadow-md flex items-start space-x-3" role="status">
+            <div id="flashSuccess" class="relative overflow-hidden bg-canopy-50 border-l-2 border-canopy-600 text-canopy-800 p-4 rounded-md shadow-sm flex items-start space-x-3" role="status">
                 <i class="fas fa-circle-check text-2xl mt-1"></i>
                 <div><p class="font-semibold">Berhasil!</p><p class="text-sm">{{ session('success') }}</p></div>
                 <button onclick="dismissFlash('flashSuccess')" class="ml-auto text-canopy-700 hover:text-canopy-900" aria-label="Tutup notifikasi"><i class="fas fa-times"></i></button>
@@ -132,7 +134,7 @@
             </div>
         @endif
         @if(session('error'))
-            <div id="flashError" class="relative overflow-hidden bg-clay-100 border-l-4 border-clay-500 text-clay-600 p-4 rounded-md shadow-md flex items-start space-x-3" role="alert">
+            <div id="flashError" class="relative overflow-hidden bg-clay-100 border-l-2 border-clay-500 text-clay-600 p-4 rounded-md shadow-sm flex items-start space-x-3" role="alert">
                 <i class="fas fa-triangle-exclamation text-2xl mt-1"></i>
                 <div><p class="font-semibold">Terjadi Kesalahan</p><p class="text-sm">{{ session('error') }}</p></div>
                 <button onclick="dismissFlash('flashError')" class="ml-auto text-clay-600 hover:text-clay-700" aria-label="Tutup notifikasi"><i class="fas fa-times"></i></button>
@@ -147,7 +149,7 @@
         <section id="page-dashboard" class="page-section space-y-8">
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-100 pb-5">
                 <div>
-                    <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Ikhtisar Kawasan</p>
+                    <p class="text-[11px] uppercase tracking-[0.14em] text-bark-500 font-semibold mb-1">Ikhtisar Kawasan</p>
                     <h2 class="text-3xl font-display font-semibold text-canopy-900">Dashboard Lahan Perhutanan</h2>
                     <p class="text-gray-600 mt-1">Kelola dan pantau data lahan, kegiatan, serta hasil hutan secara terpadu</p>
                 </div>
@@ -159,68 +161,68 @@
 
             <!-- Stat Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-                <div class="stat-card border-canopy-600">
+                <div class="stat-card">
                     <p class="stat-label">Total Lahan</p>
-                    <p class="stat-value text-canopy-800">{{ $forestLands->count() }}</p>
+                    <p class="stat-value text-ink">{{ $forestLands->count() }}</p>
                     <p class="stat-sub">blok terdaftar</p>
                 </div>
-                <div class="stat-card border-canopy-500">
+                <div class="stat-card">
                     <p class="stat-label">Total Luas</p>
-                    <p class="stat-value text-canopy-700">{{ number_format($forestLands->sum('luas_hektar'), 1) }}</p>
+                    <p class="stat-value text-ink">{{ number_format($forestLands->sum('luas_hektar'), 1) }}</p>
                     <p class="stat-sub">hektar (Ha)</p>
                 </div>
-                <div class="stat-card border-bark-500">
+                <div class="stat-card">
                     <p class="stat-label">Rata-rata Luas</p>
-                    <p class="stat-value text-bark-600">{{ $forestLands->count() > 0 ? number_format($forestLands->avg('luas_hektar'), 1) : '0.0' }}</p>
+                    <p class="stat-value text-ink">{{ $forestLands->count() > 0 ? number_format($forestLands->avg('luas_hektar'), 1) : '0.0' }}</p>
                     <p class="stat-sub">Ha / lahan</p>
                 </div>
-                <div class="stat-card border-resin-500">
+                <div class="stat-card">
                     <p class="stat-label">Status Dominan</p>
-                    <p class="stat-value text-resin-600 text-2xl">{{ $forestLands->count() > 0 ? $forestLands->countBy('status')->sortDesc()->keys()->first() : '-' }}</p>
+                    <p class="stat-value text-ink text-2xl">{{ $forestLands->count() > 0 ? $forestLands->countBy('status')->sortDesc()->keys()->first() : '-' }}</p>
                     <p class="stat-sub">terbanyak</p>
                 </div>
-                <div class="stat-card border-canopy-700">
+                <div class="stat-card">
                     <p class="stat-label">Kepatuhan Konservasi</p>
                     <p class="stat-value" id="kpiKonservasi">-</p>
                     <p class="stat-sub">acuan min. 30%</p>
                 </div>
-                <div class="stat-card border-clay-500">
+                <div class="stat-card stat-card-alert">
                     <p class="stat-label">Pengingat Aktif</p>
-                    <p class="stat-value text-clay-500" id="kpiPengingat">0</p>
+                    <p class="stat-value text-clay-600" id="kpiPengingat">0</p>
                     <p class="stat-sub">perlu tindak lanjut</p>
                 </div>
             </div>
 
             <!-- Quick status chips -->
             <div class="flex flex-wrap gap-2" id="statusChips">
-                <button data-chip="all" onclick="setChipFilter('all')" class="chip-btn chip-active" data-color="canopy">
+                <button data-chip="all" onclick="setChipFilter('all')" class="chip-btn chip-active">
                     <i class="fas fa-layer-group mr-1"></i> Semua <span class="chip-count">({{ $forestLands->count() }})</span>
                 </button>
-                <button data-chip="Konservasi" onclick="setChipFilter('Konservasi')" class="chip-btn" data-color="canopy">
+                <button data-chip="Konservasi" onclick="setChipFilter('Konservasi')" class="chip-btn">
                     <i class="fas fa-leaf mr-1"></i> Konservasi <span class="chip-count">({{ $forestLands->where('status', 'Konservasi')->count() }})</span>
                 </button>
-                <button data-chip="Produksi" onclick="setChipFilter('Produksi')" class="chip-btn" data-color="bark">
+                <button data-chip="Produksi" onclick="setChipFilter('Produksi')" class="chip-btn">
                     <i class="fas fa-industry mr-1"></i> Produksi <span class="chip-count">({{ $forestLands->where('status', 'Produksi')->count() }})</span>
                 </button>
-                <button data-chip="Reboisasi" onclick="setChipFilter('Reboisasi')" class="chip-btn" data-color="resin">
+                <button data-chip="Reboisasi" onclick="setChipFilter('Reboisasi')" class="chip-btn">
                     <i class="fas fa-seedling mr-1"></i> Reboisasi <span class="chip-count">({{ $forestLands->where('status', 'Reboisasi')->count() }})</span>
                 </button>
             </div>
 
             <!-- Reminder + Recent activity widgets -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
+                <div class="bg-white rounded-md shadow-sm border border-canopy-100 overflow-hidden">
                     <div class="panel-header bg-clay-500"><i class="fas fa-bell"></i><span>Pengingat Perawatan &amp; Tindak Lanjut</span></div>
                     <div id="reminderList" class="divide-y divide-gray-100 max-h-72 overflow-y-auto"></div>
                 </div>
-                <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
+                <div class="bg-white rounded-md shadow-sm border border-canopy-100 overflow-hidden">
                     <div class="panel-header bg-canopy-700"><i class="fas fa-clock-rotate-left"></i><span>Aktivitas Terbaru</span></div>
                     <div id="recentActivityList" class="divide-y divide-gray-100 max-h-72 overflow-y-auto"></div>
                 </div>
             </div>
 
             <!-- Filter Card -->
-            <div class="filter-card bg-white rounded-lg shadow-md p-6 border border-canopy-100">
+            <div class="filter-card bg-white rounded-md shadow-sm p-6 border border-canopy-100">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-display font-semibold text-canopy-900 flex items-center"><i class="fas fa-filter text-resin-500 mr-2"></i> Filter &amp; Pencarian</h3>
                     <button onclick="resetFilters()" class="text-sm text-gray-500 hover:text-canopy-700 transition flex items-center"><i class="fas fa-rotate-left mr-1"></i> Reset</button>
@@ -270,10 +272,10 @@
             </div>
 
             <!-- Table Card -->
-            <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
-                <div class="panel-header bg-gradient-to-r from-canopy-800 to-canopy-600">
+            <div class="bg-white rounded-md shadow-sm border border-canopy-100 overflow-hidden">
+                <div class="panel-header bg-canopy-800">
                     <div class="flex items-center space-x-2"><i class="fas fa-table"></i><span>Daftar Lahan Perhutanan</span></div>
-                    <button onclick="switchPage('tambah-lahan')" class="ml-auto bg-resin-500 hover:bg-resin-600 text-canopy-900 px-3 py-1.5 rounded-md font-semibold text-xs shadow transition flex items-center space-x-1">
+                    <button onclick="switchPage('tambah-lahan')" class="ml-auto bg-resin-500 hover:bg-resin-600 text-ink px-3 py-1.5 rounded-md font-semibold text-xs transition flex items-center space-x-1">
                         <i class="fas fa-plus"></i><span>Catat Lahan</span>
                     </button>
                 </div>
@@ -345,14 +347,14 @@
             <div class="flex items-center space-x-3 mb-2 border-b border-canopy-100 pb-5">
                 <button onclick="switchPage('dashboard')" class="p-2 bg-white rounded-md shadow border border-canopy-100 text-canopy-700 hover:bg-canopy-50" aria-label="Kembali ke dashboard"><i class="fas fa-arrow-left"></i></button>
                 <div>
-                    <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Pendaftaran Blok Baru</p>
+                    <p class="text-[11px] uppercase tracking-[0.14em] text-bark-500 font-semibold mb-1">Pendaftaran Blok Baru</p>
                     <h2 class="text-3xl font-display font-semibold text-canopy-900">Tambah Lahan Baru</h2>
                     <p class="text-gray-600">Daftarkan blok lahan komoditas perhutanan baru ke dalam sistem</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 bg-white rounded-lg shadow-md border-t-4 border-canopy-600 p-6 sm:p-8">
+                <div class="lg:col-span-2 bg-white rounded-md shadow-sm border-t-2 border-canopy-600 p-6 sm:p-8">
                     <form method="POST" action="{{ route('forest.store') }}" class="space-y-6" id="addForm" onsubmit="return validateAddForm()">
                         @csrf
 
@@ -433,7 +435,7 @@
                 </div>
 
                 <div class="space-y-6">
-                    <div class="bg-white rounded-lg shadow-md border-t-4 border-resin-500 p-6">
+                    <div class="bg-white rounded-md shadow-sm border-t-2 border-resin-500 p-6">
                         <h4 class="panel-title"><i class="fas fa-eye text-resin-600 mr-2"></i> Pratinjau Data</h4>
                         <div class="border-2 border-dashed border-gray-200 rounded-md p-4 space-y-3">
                             <div><p class="text-xs text-gray-400 uppercase tracking-wide">Nama Lahan</p><p id="previewNama" class="font-bold text-gray-800 text-lg">-</p></div>
@@ -448,7 +450,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-md border-t-4 border-bark-500 p-6">
+                    <div class="bg-white rounded-md shadow-sm border-t-2 border-bark-500 p-6">
                         <h4 class="panel-title"><i class="fas fa-lightbulb text-bark-500 mr-2"></i> Tips Pengisian</h4>
                         <ul class="space-y-3 text-sm text-gray-600">
                             <li class="flex items-start space-x-2"><i class="fas fa-check text-canopy-600 mt-0.5"></i><span>Sertakan kode petak/RPH pada nama agar mudah dicari, contoh <em>"RPH Mangunan A1"</em>.</span></li>
@@ -457,7 +459,7 @@
                         </ul>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-md border-t-4 border-canopy-500 p-6">
+                    <div class="bg-white rounded-md shadow-sm border-t-2 border-canopy-500 p-6">
                         <h4 class="panel-title"><i class="fas fa-chart-simple text-canopy-600 mr-2"></i> Ringkasan Saat Ini</h4>
                         <div class="space-y-2 text-sm">
                             <div class="flex justify-between"><span class="text-gray-500">Total Lahan</span><span class="font-mono font-bold text-canopy-700">{{ $forestLands->count() }}</span></div>
@@ -472,7 +474,7 @@
         <section id="page-kegiatan" class="page-section hidden space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-100 pb-5">
                 <div>
-                    <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Buku Lapangan</p>
+                    <p class="text-[11px] uppercase tracking-[0.14em] text-bark-500 font-semibold mb-1">Buku Lapangan</p>
                     <h2 class="text-3xl font-display font-semibold text-canopy-900">Kegiatan &amp; Riwayat Lahan</h2>
                     <p class="text-gray-600 mt-1">Catat penanaman, pemeliharaan, penebangan, panen, dan inspeksi setiap blok lahan</p>
                 </div>
@@ -480,7 +482,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-1 bg-white rounded-lg shadow-md border-t-4 border-canopy-600 p-6">
+                <div class="lg:col-span-1 bg-white rounded-md shadow-sm border-t-2 border-canopy-600 p-6">
                     <h4 class="panel-title"><i class="fas fa-pen-to-square text-resin-600 mr-2"></i> Catat Kegiatan Baru</h4>
                     <form id="kegiatanForm" class="space-y-4" onsubmit="return submitKegiatan(event)">
                         <div>
@@ -524,7 +526,7 @@
                 </div>
 
                 <div class="lg:col-span-2 space-y-4">
-                    <div class="bg-white rounded-lg shadow-md border border-canopy-100 p-4 flex flex-wrap gap-3 items-center">
+                    <div class="bg-white rounded-md shadow-sm border border-canopy-100 p-4 flex flex-wrap gap-3 items-center">
                         <select id="kFilterLahan" class="field-input !py-1.5 !w-auto text-sm" onchange="renderKegiatanList()"><option value="all">Semua Lahan</option></select>
                         <select id="kFilterJenis" class="field-input !py-1.5 !w-auto text-sm" onchange="renderKegiatanList()">
                             <option value="all">Semua Jenis</option>
@@ -538,8 +540,8 @@
                         <button onclick="exportKegiatanCSV()" class="btn-outline ml-auto"><i class="fas fa-file-csv"></i><span>Export CSV</span></button>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
-                        <div class="panel-header bg-gradient-to-r from-canopy-800 to-canopy-600"><i class="fas fa-timeline"></i><span>Lini Masa Kegiatan</span></div>
+                    <div class="bg-white rounded-md shadow-sm border border-canopy-100 overflow-hidden">
+                        <div class="panel-header bg-canopy-800"><i class="fas fa-timeline"></i><span>Lini Masa Kegiatan</span></div>
                         <div id="kegiatanTimeline" class="divide-y divide-gray-100 max-h-[560px] overflow-y-auto"></div>
                         <div id="kegiatanEmpty" class="hidden text-center py-12">
                             <i class="fas fa-clipboard text-gray-300 text-5xl mb-3"></i>
@@ -554,7 +556,7 @@
         <section id="page-produksi" class="page-section hidden space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-100 pb-5">
                 <div>
-                    <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Buku Hasil Hutan</p>
+                    <p class="text-[11px] uppercase tracking-[0.14em] text-bark-500 font-semibold mb-1">Buku Hasil Hutan</p>
                     <h2 class="text-3xl font-display font-semibold text-canopy-900">Produksi Hasil Hutan</h2>
                     <p class="text-gray-600 mt-1">Catat dan pantau hasil kayu, getah, dan komoditas hutan lainnya per lahan</p>
                 </div>
@@ -568,7 +570,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-1 bg-white rounded-lg shadow-md border-t-4 border-bark-500 p-6">
+                <div class="lg:col-span-1 bg-white rounded-md shadow-sm border-t-2 border-bark-500 p-6">
                     <h4 class="panel-title"><i class="fas fa-plus text-bark-600 mr-2"></i> Catat Hasil Produksi</h4>
                     <form id="produksiForm" class="space-y-4" onsubmit="return submitProduksi(event)">
                         <div>
@@ -618,7 +620,7 @@
                 </div>
 
                 <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-white rounded-lg shadow-md border-t-4 border-bark-500 p-6">
+                    <div class="bg-white rounded-md shadow-sm border-t-2 border-bark-500 p-6">
                         <div class="flex items-center justify-between mb-4">
                             <h4 class="panel-title mb-0"><i class="fas fa-chart-line text-bark-600 mr-2"></i> Tren Produksi per Bulan</h4>
                             <button onclick="downloadChart('produksiChart','tren-produksi')" class="text-gray-400 hover:text-bark-600 transition" title="Unduh grafik"><i class="fas fa-download"></i></button>
@@ -626,8 +628,8 @@
                         <div class="relative" style="height:280px;"><canvas id="produksiChart"></canvas></div>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-md border border-canopy-100 overflow-hidden">
-                        <div class="panel-header bg-gradient-to-r from-bark-700 to-bark-500">
+                    <div class="bg-white rounded-md shadow-sm border border-canopy-100 overflow-hidden">
+                        <div class="panel-header bg-bark-700">
                             <i class="fas fa-list"></i><span>Riwayat Produksi</span>
                             <button onclick="exportProduksiCSV()" class="ml-auto bg-white text-bark-700 hover:bg-bark-100 px-3 py-1.5 rounded-md font-semibold text-xs shadow transition flex items-center space-x-1"><i class="fas fa-file-csv"></i><span>Export</span></button>
                         </div>
@@ -658,14 +660,14 @@
         <section id="page-analisis" class="page-section hidden space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-100 pb-5">
                 <div>
-                    <p class="text-xs uppercase tracking-[0.2em] text-resin-600 font-semibold mb-1">Telaah Data</p>
+                    <p class="text-[11px] uppercase tracking-[0.14em] text-bark-500 font-semibold mb-1">Telaah Data</p>
                     <h2 class="text-3xl font-display font-semibold text-canopy-900">Analisis Visual Data Lahan</h2>
                     <p class="text-gray-600 mt-1">Distribusi luas lahan berdasarkan status wilayah</p>
                 </div>
                 <button onclick="printPage()" class="no-print btn-outline-neutral self-start"><i class="fas fa-print"></i><span>Cetak Analisis</span></button>
             </div>
 
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-canopy-600">
+            <div class="bg-white rounded-md shadow-sm p-6 border-l-2 border-canopy-600">
                 <h4 class="panel-title"><i class="fas fa-wand-magic-sparkles text-resin-500 mr-2"></i> Ringkasan Insight</h4>
                 <ul id="insightList" class="space-y-2 text-sm text-gray-700">
                     <li class="flex items-start space-x-2"><i class="fas fa-circle-notch fa-spin text-gray-300 mt-1"></i><span>Menghitung insight...</span></li>
@@ -673,15 +675,15 @@
             </div>
 
             <!-- Signature: tree-ring conservation gauge -->
-            <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-canopy-600">
+            <div class="bg-white rounded-md shadow-sm p-6 border-t-2 border-canopy-600">
                 <div class="flex flex-col sm:flex-row sm:items-center gap-6">
                     <div class="shrink-0 mx-auto sm:mx-0">
                         <svg width="160" height="160" viewBox="0 0 160 160" id="ringGauge">
-                            <circle cx="80" cy="80" r="70" fill="none" stroke="#eef2ed" stroke-width="14"/>
-                            <circle id="ringTarget" cx="80" cy="80" r="70" fill="none" stroke="#a9cba0" stroke-width="2" stroke-dasharray="4 4" transform="rotate(-90 80 80)"/>
-                            <circle id="ringProgress" cx="80" cy="80" r="70" fill="none" stroke="#2f6349" stroke-width="14" stroke-linecap="round" stroke-dasharray="0 440" transform="rotate(-90 80 80)" style="transition: stroke-dasharray 1s ease-out, stroke .4s;"/>
-                            <text x="80" y="76" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="26" font-weight="600" fill="#152e24" id="ringPct">0%</text>
-                            <text x="80" y="96" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="10" fill="#6b7280">konservasi</text>
+                            <circle cx="80" cy="80" r="70" fill="none" stroke="#ece1d3" stroke-width="10"/>
+                            <circle id="ringTarget" cx="80" cy="80" r="70" fill="none" stroke="#8a6242" stroke-width="1.5" stroke-dasharray="4 4" transform="rotate(-90 80 80)"/>
+                            <circle id="ringProgress" cx="80" cy="80" r="70" fill="none" stroke="#3a5730" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 440" transform="rotate(-90 80 80)" style="transition: stroke-dasharray 1s ease-out, stroke .4s;"/>
+                            <text x="80" y="76" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="26" font-weight="600" fill="#26211a" id="ringPct">0%</text>
+                            <text x="80" y="96" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="10" fill="#8a6242">konservasi</text>
                         </svg>
                     </div>
                     <div class="flex-1">
@@ -692,8 +694,8 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-canopy-100">
-                <div class="panel-header bg-gradient-to-r from-canopy-800 to-canopy-600"><i class="fas fa-table-list"></i><span>Ringkasan Detail per Status</span></div>
+            <div class="bg-white rounded-md shadow-sm overflow-hidden border border-canopy-100">
+                <div class="panel-header bg-canopy-800"><i class="fas fa-table-list"></i><span>Ringkasan Detail per Status</span></div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-canopy-50">
@@ -764,51 +766,50 @@
         @keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         .page-section:not(.hidden) { animation: fade-in .35s ease-out forwards; }
 
-        .nav-tab-btn { @apply px-3 py-2 rounded-md text-sm font-medium transition duration-150 flex items-center space-x-2 text-canopy-100 hover:bg-canopy-800; }
-        .nav-tab-btn.active-tab { @apply bg-resin-500 text-canopy-900 shadow; }
-        .mnav-tab-btn { @apply w-full text-left text-canopy-100 hover:bg-canopy-800 px-4 py-2.5 rounded-md font-medium flex items-center space-x-2; }
-        .mnav-tab-btn.active-tab { @apply bg-resin-500 text-canopy-900; }
+        .nav-tab-btn { @apply px-3 py-2 rounded-md text-sm font-medium transition duration-150 flex items-center space-x-2 text-canopy-200 hover:bg-canopy-800; }
+        .nav-tab-btn.active-tab { @apply bg-canopy-50 text-canopy-900; }
+        .mnav-tab-btn { @apply w-full text-left text-canopy-200 hover:bg-canopy-800 px-4 py-2.5 rounded-md font-medium flex items-center space-x-2; }
+        .mnav-tab-btn.active-tab { @apply bg-canopy-50 text-canopy-900; }
 
         .field-label { @apply flex items-center text-sm font-medium text-gray-700 mb-2; }
-        .field-input { @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-canopy-500 focus:border-canopy-500 focus:outline-none transition; }
+        .field-input { @apply w-full px-4 py-2 border border-bark-300/70 rounded-md bg-white focus:ring-1 focus:ring-canopy-600 focus:border-canopy-600 focus:outline-none transition; }
 
-        .stat-card { @apply bg-white rounded-lg shadow-md p-5 border-t-4 hover:shadow-lg hover:-translate-y-0.5 transition duration-200; }
-        .stat-label { @apply text-gray-500 text-[11px] font-semibold uppercase tracking-wide; }
+        /* Kartu ledger: garis tipis, tanpa efek melayang/shadow tebal ala dashboard SaaS */
+        .stat-card { @apply bg-white rounded-md p-5 border border-bark-100 border-l-[3px] border-l-canopy-600; }
+        .stat-card-alert { @apply border-l-clay-500; }
+        .stat-label { @apply text-bark-600 text-[11px] font-semibold uppercase tracking-wide; }
         .stat-value { @apply text-3xl font-mono font-bold mt-1; }
         .stat-sub { @apply text-xs text-gray-400 mt-1; }
 
-        .panel-header { @apply px-6 py-3.5 flex items-center space-x-2 text-white font-display font-semibold; }
-        .panel-title { @apply text-sm font-bold text-gray-700 uppercase tracking-wide mb-4 flex items-center; }
+        .panel-header { @apply px-6 py-3 flex items-center space-x-2 text-white font-display font-semibold text-[15px]; }
+        .panel-title { @apply text-sm font-bold text-bark-700 uppercase tracking-wide mb-4 flex items-center; }
 
-        .chip-btn { @apply px-4 py-2 rounded-full text-sm font-semibold border-2 bg-white transition; }
-        .chip-btn[data-color="canopy"] { @apply border-canopy-600 text-canopy-700 hover:bg-canopy-50; }
-        .chip-btn[data-color="bark"] { @apply border-bark-500 text-bark-600 hover:bg-bark-100/60; }
-        .chip-btn[data-color="resin"] { @apply border-resin-500 text-resin-700 hover:bg-resin-100/60; }
-        .chip-btn.chip-active[data-color="canopy"] { @apply bg-canopy-600 text-white; }
-        .chip-btn.chip-active[data-color="bark"] { @apply bg-bark-500 text-white; }
-        .chip-btn.chip-active[data-color="resin"] { @apply bg-resin-500 text-white; }
+        /* Chip status: satu nada netral, aktif = tinta pena. Bukan pil pelangi. */
+        .chip-btn { @apply px-4 py-1.5 rounded-md text-sm font-medium border border-bark-300/70 bg-white text-bark-700 hover:border-canopy-600 hover:text-canopy-700 transition; }
+        .chip-btn.chip-active { @apply bg-canopy-700 border-canopy-700 text-white; }
 
-        .th-cell { @apply px-6 py-3.5 text-left text-xs font-bold text-canopy-800 uppercase tracking-wider; }
+        .th-cell { @apply px-6 py-3 text-left text-[11px] font-bold text-bark-600 uppercase tracking-wider border-b border-bark-100; }
         .td-cell { @apply px-6 py-4 whitespace-nowrap; }
 
-        .status-badge { @apply px-3 py-1 rounded-full text-xs font-bold; }
-        .status-Konservasi { @apply bg-canopy-100 text-canopy-800; }
-        .status-Produksi { @apply bg-bark-100 text-bark-700; }
-        .status-Reboisasi { @apply bg-resin-100 text-resin-700; }
+        /* Status dibedakan lewat label + intensitas satu warna (pena tinta hijau), bukan tiga hue berbeda */
+        .status-badge { @apply px-3 py-1 rounded text-xs font-bold border; }
+        .status-Konservasi { @apply bg-canopy-50 text-canopy-800 border-canopy-300; }
+        .status-Produksi { @apply bg-bark-100 text-bark-700 border-bark-300; }
+        .status-Reboisasi { @apply bg-resin-100 text-resin-700 border-resin-300; }
 
-        .action-btn { @apply text-white px-2.5 py-1.5 rounded-md text-xs font-semibold shadow-sm transition hover:brightness-110; }
-        .btn-primary { @apply bg-canopy-700 hover:bg-canopy-800 text-white px-5 py-2.5 rounded-md font-medium shadow-md transition flex items-center justify-center space-x-2; }
-        .btn-outline { @apply bg-white border-2 border-canopy-600 text-canopy-700 hover:bg-canopy-50 px-3 py-2 rounded-md text-sm font-semibold transition flex items-center space-x-1; }
-        .btn-outline-neutral { @apply bg-white border-2 border-gray-300 text-gray-600 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-semibold transition flex items-center space-x-1; }
-        .status-quick-btn { @apply border-2 rounded-md p-3 text-left transition; }
+        .action-btn { @apply text-white px-2.5 py-1.5 rounded-md text-xs font-semibold transition hover:brightness-110; }
+        .btn-primary { @apply bg-canopy-700 hover:bg-canopy-800 text-white px-5 py-2.5 rounded-md font-medium transition flex items-center justify-center space-x-2; }
+        .btn-outline { @apply bg-white border border-canopy-600 text-canopy-700 hover:bg-canopy-50 px-3 py-2 rounded-md text-sm font-semibold transition flex items-center space-x-1; }
+        .btn-outline-neutral { @apply bg-white border border-bark-300 text-bark-600 hover:bg-bark-100/50 px-3 py-2 rounded-md text-sm font-semibold transition flex items-center space-x-1; }
+        .status-quick-btn { @apply border rounded-md p-3 text-left transition; }
 
-        .chart-card { @apply bg-white rounded-lg shadow-md p-6 border-t-4; }
+        .chart-card { @apply bg-white rounded-md p-6 border border-bark-100 border-t-[3px]; }
 
         #tableBody tr.hidden-row { display: none !important; }
-        .page-num-btn.active-page { background-color: #2f6349; color: #fff; border-color: #2f6349; }
+        .page-num-btn.active-page { background-color: #3a5730; color: #fff; border-color: #3a5730; }
 
         button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-            outline: 2px solid #3f7a5c; outline-offset: 2px;
+            outline: 2px solid #4b6b3f; outline-offset: 2px;
         }
 
         @media print {
@@ -823,7 +824,7 @@
             .page-section.hidden { display: none !important; }
             .page-section:not(.hidden) { display: block !important; animation: none !important; }
             body { background: #fff !important; }
-            .shadow-lg, .shadow, .shadow-md, .shadow-sm, .shadow-xl { box-shadow: none !important; }
+            .shadow-sm, .shadow, .shadow-xl { box-shadow: none !important; }
             canvas { max-width: 100% !important; }
         }
     </style>
@@ -890,7 +891,7 @@
             const form = btn.closest('form');
             Swal.fire({
                 title: 'Hapus lahan ini?', text: 'Data yang sudah dihapus tidak dapat dikembalikan.', icon: 'warning',
-                showCancelButton: true, confirmButtonColor: '#b3462c', cancelButtonColor: '#6b7280',
+                showCancelButton: true, confirmButtonColor: '#a1462a', cancelButtonColor: '#6b7280',
                 confirmButtonText: 'Ya, hapus', cancelButtonText: 'Batal'
             }).then((result) => { if (result.isConfirmed) form.submit(); });
         }
@@ -1267,7 +1268,7 @@
         async function deleteKegiatan(id) {
             const result = await Swal.fire({
                 title: 'Hapus kegiatan ini?', text: 'Data yang sudah dihapus tidak dapat dikembalikan.', icon: 'warning',
-                showCancelButton: true, confirmButtonColor: '#b3462c', cancelButtonColor: '#6b7280',
+                showCancelButton: true, confirmButtonColor: '#a1462a', cancelButtonColor: '#6b7280',
                 confirmButtonText: 'Ya, hapus', cancelButtonText: 'Batal'
             });
             if (!result.isConfirmed) return;
@@ -1362,7 +1363,7 @@
         async function deleteProduksi(id) {
             const result = await Swal.fire({
                 title: 'Hapus data produksi ini?', text: 'Data yang sudah dihapus tidak dapat dikembalikan.', icon: 'warning',
-                showCancelButton: true, confirmButtonColor: '#b3462c', cancelButtonColor: '#6b7280',
+                showCancelButton: true, confirmButtonColor: '#a1462a', cancelButtonColor: '#6b7280',
                 confirmButtonText: 'Ya, hapus', cancelButtonText: 'Batal'
             });
             if (!result.isConfirmed) return;
@@ -1445,8 +1446,8 @@
                         datasets: [{
                             label: 'Total Jumlah Produksi',
                             data: values.length ? values : [0],
-                            backgroundColor: '#4a7343',
-                            borderRadius: 6,
+                            backgroundColor: '#6f4d33',
+                            borderRadius: 4,
                             maxBarThickness: 48
                         }]
                     },
@@ -1557,8 +1558,8 @@
             if (document.getElementById('barTotal')) document.getElementById('barTotal').textContent = totalLuas.toFixed(2);
             if (document.getElementById('donutTotal')) document.getElementById('donutTotal').textContent = totalCount;
 
-            // Palet hijau bertingkat: hijau tua (Konservasi), hijau moss (Produksi), hijau lime (Reboisasi)
-            const palette = ['#2f6349', '#4a7343', '#6f8f28'];
+            // Satu warna per pemanfaatan lahan: hijau tajuk (Konservasi), coklat kayu (Produksi), kuning getah (Reboisasi)
+            const palette = ['#3a5730', '#8a6242', '#b8862f'];
 
             const pieCtx = document.getElementById('pieChart').getContext('2d');
             if (pieChart) pieChart.destroy();
@@ -1575,13 +1576,13 @@
             const topFive = [...landsData].sort((a, b) => parseFloat(b.luas_hektar) - parseFloat(a.luas_hektar)).slice(0, 5);
             const topCtx = document.getElementById('topChart').getContext('2d');
             if (topChart) topChart.destroy();
-            topChart = new Chart(topCtx, { type: 'bar', data: { labels: topFive.map(l => l.nama_lahan), datasets: [{ label: 'Luas (Ha)', data: topFive.map(l => parseFloat(l.luas_hektar)), backgroundColor: '#6f8f28', borderRadius: 6 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } } });
+            topChart = new Chart(topCtx, { type: 'bar', data: { labels: topFive.map(l => l.nama_lahan), datasets: [{ label: 'Luas (Ha)', data: topFive.map(l => parseFloat(l.luas_hektar)), backgroundColor: '#976c22', borderRadius: 4 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } } });
 
             const sizeBuckets = { Kecil: 0, Sedang: 0, Besar: 0 };
             landsData.forEach(l => { const luas = parseFloat(l.luas_hektar); if (luas < 10) sizeBuckets.Kecil++; else if (luas <= 50) sizeBuckets.Sedang++; else sizeBuckets.Besar++; });
             const sizeCtx = document.getElementById('sizeChart').getContext('2d');
             if (sizeChart) sizeChart.destroy();
-            sizeChart = new Chart(sizeCtx, { type: 'bar', data: { labels: ['Kecil (< 10 Ha)', 'Sedang (10-50 Ha)', 'Besar (> 50 Ha)'], datasets: [{ label: 'Jumlah Lahan', data: [sizeBuckets.Kecil, sizeBuckets.Sedang, sizeBuckets.Besar], backgroundColor: ['#d8e3d7', '#7ea888', '#2f6349'], borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } });
+            sizeChart = new Chart(sizeCtx, { type: 'bar', data: { labels: ['Kecil (< 10 Ha)', 'Sedang (10-50 Ha)', 'Besar (> 50 Ha)'], datasets: [{ label: 'Jumlah Lahan', data: [sizeBuckets.Kecil, sizeBuckets.Sedang, sizeBuckets.Besar], backgroundColor: ['#dbe2d0', '#93aa7c', '#3a5730'], borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } });
 
             renderSummaryTable(statusLuas, statusCount, totalLuas);
             renderConservationRatio(statusLuas, totalLuas);
@@ -1619,7 +1620,7 @@
             const ringTarget = document.getElementById('ringTarget');
             if (ringProgress) {
                 ringProgress.setAttribute('stroke-dasharray', `${progress} ${circumference}`);
-                ringProgress.setAttribute('stroke', pct >= target ? '#2f6349' : '#6f8f28');
+                ringProgress.setAttribute('stroke', pct >= target ? '#3a5730' : '#b8862f');
             }
             if (ringTarget) {
                 const targetLen = target / 100 * circumference;
