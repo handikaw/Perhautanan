@@ -791,6 +791,8 @@
         }
 
         @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+
             nav, #mobileMenu, #flashSuccess, #flashError, #liveClock,
             .filter-card, #noResults, #paginationControls, #paginationInfo,
             .delete-form, .sort-icon,
@@ -1048,19 +1050,9 @@
 
         // ================= Print =================
         function printPage() {
-            Swal.fire({
-                title: 'Cetak halaman ini?',
-                text: 'Dialog cetak perangkat akan terbuka. Anda bisa memilih tujuan cetak (printer, simpan sebagai PDF, dsb.) di sana.',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3a5730', cancelButtonColor: '#6b7280',
-                confirmButtonText: 'Ya, cetak', cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (!result.isConfirmed) return;
-                const analisisVisible = !document.getElementById('page-analisis').classList.contains('hidden');
-                if (analisisVisible) { initCharts(); setTimeout(() => window.print(), 300); }
-                else window.print();
-            });
+            const analisisVisible = !document.getElementById('page-analisis').classList.contains('hidden');
+            if (analisisVisible) { initCharts(); setTimeout(() => window.print(), 300); }
+            else window.print();
         }
 
         // ================= Export CSV (lahan) =================
