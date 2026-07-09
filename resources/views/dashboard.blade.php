@@ -61,6 +61,7 @@
                     <button id="tab-kegiatan" onclick="switchPage('kegiatan')" class="nav-tab-btn"><i class="fas fa-clipboard-list"></i><span>Kegiatan Lahan</span></button>
                     <button id="tab-produksi" onclick="switchPage('produksi')" class="nav-tab-btn"><i class="fas fa-hive"></i><span>Produksi Hutan</span></button>
                     <button id="tab-analisis" onclick="switchPage('analisis')" class="nav-tab-btn"><i class="fas fa-chart-pie"></i><span>Analisis</span></button>
+                    <button id="tab-paket" onclick="switchPage('paket')" class="nav-tab-btn"><i class="fas fa-crown"></i><span>Paket</span></button>
                 </div>
 
                 <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-canopy-50 hover:bg-canopy-800 transition" onclick="toggleMobileMenu()" aria-label="Buka menu" aria-expanded="false" aria-controls="mobileMenu">
@@ -100,6 +101,7 @@
             <button id="mtab-kegiatan" onclick="switchPage('kegiatan'); toggleMobileMenu();" class="mnav-tab-btn"><i class="fas fa-clipboard-list w-5"></i><span>Kegiatan Lahan</span></button>
             <button id="mtab-produksi" onclick="switchPage('produksi'); toggleMobileMenu();" class="mnav-tab-btn"><i class="fas fa-hive w-5"></i><span>Produksi Hutan</span></button>
             <button id="mtab-analisis" onclick="switchPage('analisis'); toggleMobileMenu();" class="mnav-tab-btn"><i class="fas fa-chart-pie w-5"></i><span>Analisis Lahan</span></button>
+            <button id="mtab-paket" onclick="switchPage('paket'); toggleMobileMenu();" class="mnav-tab-btn"><i class="fas fa-crown w-5"></i><span>Paket Berlangganan</span></button>
 
             <div class="border-t border-canopy-700 pt-3 mt-2">
                 <div class="flex items-center space-x-3 px-4 py-2">
@@ -158,6 +160,27 @@
                     <span id="liveClock" class="font-mono">-</span>
                 </div>
             </div>
+
+            <!-- Plan status banner -->
+            @if(!Auth::user()->is_premium)
+                <div class="bg-white rounded-md shadow-sm border-l-[3px] border-l-resin-500 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-crown text-resin-500 text-xl"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-ink">Paket Free &middot; {{ $forestLands->count() }}/10 lahan terpakai</p>
+                            <p class="text-xs text-gray-500">Upgrade ke Premium untuk lahan &amp; cetak PDF tanpa batas.</p>
+                        </div>
+                    </div>
+                    <button onclick="switchPage('paket')" class="no-print bg-resin-500 hover:bg-resin-600 text-ink px-4 py-2 rounded-md font-semibold text-xs transition shrink-0">
+                        <i class="fas fa-arrow-up mr-1"></i> Lihat Paket Premium
+                    </button>
+                </div>
+            @else
+                <div class="bg-white rounded-md shadow-sm border-l-[3px] border-l-canopy-600 p-4 flex items-center space-x-3">
+                    <i class="fas fa-crown text-canopy-600 text-xl"></i>
+                    <p class="text-sm font-semibold text-ink">Paket Premium aktif &middot; lahan &amp; cetak PDF tanpa batas</p>
+                </div>
+            @endif
 
             <!-- Stat Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
@@ -738,6 +761,76 @@
             </div>
         </section>
 
+        <!-- ============ PAKET / BERLANGGANAN PAGE ============ -->
+        <section id="page-paket" class="page-section hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-canopy-100 pb-5">
+                <div>
+                    <p class="text-[11px] uppercase tracking-[0.14em] text-bark-500 font-semibold mb-1">Berlangganan</p>
+                    <h2 class="text-3xl font-display font-semibold text-canopy-900">Paket Free &amp; Premium</h2>
+                    <p class="text-gray-600 mt-1">Bandingkan fitur dan upgrade kapan saja</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-md shadow-sm border border-canopy-100 overflow-hidden">
+                <table class="min-w-full">
+                    <colgroup>
+                        <col class="w-[34%]"><col class="w-[33%]"><col class="w-[33%]">
+                    </colgroup>
+                    <thead>
+                        <tr class="bg-canopy-900">
+                            <th class="text-left px-6 py-4 text-white text-xs font-semibold tracking-wider uppercase">Fitur</th>
+                            <th class="text-center px-6 py-4 text-white text-xs font-semibold tracking-wider uppercase">Free</th>
+                            <th class="text-center px-6 py-4 text-resin-400 text-xs font-semibold tracking-wider uppercase">Premium</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-100">
+                        @foreach($planFeatures as $feature)
+                            <tr>
+                                <td class="td-cell text-gray-800">{{ $feature->feature_name }}</td>
+                                <td class="td-cell text-center text-bark-500">
+                                    @if($feature->value_type === 'boolean')
+                                        @if($feature->free_bool)
+                                            <i class="fas fa-check text-canopy-700"></i>
+                                        @else
+                                            <i class="fas fa-xmark text-gray-300"></i>
+                                        @endif
+                                    @else
+                                        {{ $feature->free_text }}
+                                    @endif
+                                </td>
+                                <td class="td-cell text-center font-semibold text-canopy-800">
+                                    @if($feature->value_type === 'boolean')
+                                        @if($feature->premium_bool)
+                                            <i class="fas fa-check text-canopy-700"></i>
+                                        @else
+                                            <i class="fas fa-xmark text-gray-300"></i>
+                                        @endif
+                                    @else
+                                        {{ $feature->premium_text }}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                @if(!Auth::user()->is_premium)
+                    <div class="p-6 text-center border-t border-gray-100">
+                        <form action="{{ route('premium.upgrade') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="bg-resin-500 hover:bg-resin-600 text-ink font-semibold px-8 py-3 rounded-md transition">
+                                <i class="fas fa-crown mr-2"></i>Upgrade ke Premium
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <div class="p-6 text-center border-t border-gray-100 text-sm text-canopy-700 font-semibold">
+                        <i class="fas fa-circle-check mr-1"></i> Akun kamu sudah Premium
+                    </div>
+                @endif
+            </div>
+        </section>
+
     </div>
 
     <style type="text/tailwindcss">
@@ -812,7 +905,7 @@
 
     <script>
         // ================= Navigation =================
-        const ALL_TABS = ['dashboard', 'tambah-lahan', 'kegiatan', 'produksi', 'analisis'];
+        const ALL_TABS = ['dashboard', 'tambah-lahan', 'kegiatan', 'produksi', 'analisis', 'paket'];
 
         async function switchPage(pageId) {
             document.querySelectorAll('.page-section').forEach(section => section.classList.add('hidden'));
