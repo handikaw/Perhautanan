@@ -5,6 +5,7 @@ use App\Http\Controllers\ForestLandController;
 use App\Http\Controllers\LandActivityController;
 use App\Http\Controllers\ForestProductionController;
 use App\Http\Controllers\PricingController;
+use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,6 +33,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/produksi', [ForestProductionController::class, 'store'])->name('produksi.store');
     Route::put('/produksi/{forestProduction}', [ForestProductionController::class, 'update'])->name('produksi.update');
     Route::delete('/produksi/{forestProduction}', [ForestProductionController::class, 'destroy'])->name('produksi.destroy');
+
+    Route::get('/export/lahan', [ExportController::class, 'exportLahan'])->name('export.lahan');
+    Route::get('/export/kegiatan', [ExportController::class, 'exportKegiatan'])->name('export.kegiatan');
+    Route::get('/export/produksi', [ExportController::class, 'exportProduksi'])->name('export.produksi');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

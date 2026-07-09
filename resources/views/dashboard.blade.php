@@ -288,7 +288,7 @@
                         </select>
                     </div>
                     <div class="flex space-x-2">
-                        <button onclick="exportCSV()" class="btn-outline"><i class="fas fa-file-csv"></i><span>Export CSV</span></button>
+                        <button onclick="exportExcel('lahan')" class="btn-outline"><i class="fas fa-file-excel text-green-600"></i><span>Export Excel</span></button>
                         <button onclick="printPage()" class="btn-outline-neutral"><i class="fas fa-print"></i><span>Cetak</span></button>
                     </div>
                 </div>
@@ -538,7 +538,7 @@
                             <option value="Inspeksi">Inspeksi</option>
                             <option value="Lainnya">Lainnya</option>
                         </select>
-                        <button onclick="exportKegiatanCSV()" class="btn-outline ml-auto"><i class="fas fa-file-csv"></i><span>Export CSV</span></button>
+                        <button onclick="exportExcel('kegiatan')" class="btn-outline ml-auto"><i class="fas fa-file-excel text-green-600"></i><span>Export Excel</span></button>
                     </div>
 
                     <div class="bg-white rounded-md shadow-sm border border-canopy-100 overflow-hidden">
@@ -632,7 +632,7 @@
                     <div class="bg-white rounded-md shadow-sm border border-canopy-100 overflow-hidden">
                         <div class="panel-header bg-bark-700">
                             <i class="fas fa-list"></i><span>Riwayat Produksi</span>
-                            <button onclick="exportProduksiCSV()" class="no-print ml-auto bg-white text-bark-700 hover:bg-bark-100 px-3 py-1.5 rounded-md font-semibold text-xs shadow transition flex items-center space-x-1"><i class="fas fa-file-csv"></i><span>Export</span></button>
+                            <button onclick="exportExcel('produksi')" class="no-print ml-auto bg-white text-bark-700 hover:bg-bark-100 px-3 py-1.5 rounded-md font-semibold text-xs shadow transition flex items-center space-x-1"><i class="fas fa-file-excel text-green-600"></i><span>Export Excel</span></button>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
@@ -1148,21 +1148,57 @@
             else window.print();
         }
 
-        // ================= Export CSV (lahan) =================
-        function exportCSV() {
-            const data = currentFilteredData();
-            if (data.length === 0) { Swal.fire('Tidak ada data', 'Tidak ada data untuk diekspor sesuai filter saat ini.', 'info'); return; }
-            let csv = 'Nama Lahan,Luas (Ha),Status\n';
-            data.forEach(l => { csv += `"${l.nama_lahan.replace(/"/g, '""')}",${l.luas_hektar},${l.status}\n`; });
-            downloadCsv(csv, `data-lahan-${new Date().toISOString().slice(0, 10)}.csv`);
-        }
-        function downloadCsv(csv, filename) {
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = filename;
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        // ================= Export Excel =================
+        function exportExcel(type) {
+            const routeMap = {
+                'lahan': "{{ route('export.lahan') }}",
+                'kegiatan': "{{ route('export.kegiatan') }}",
+                'produksi': "{{ route('export.produksi') }}"
+            };
+
+            Swal.fire({
+                title: 'Membuat Excel...',
+                html: 'Mohon tunggu sebentar',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            let params = new URLSearchParams();
+
+            if (type === 'lahan') {
+                const filtered = currentFilteredData();
+                if (filtered.length > 0) {
+                    params.append('ids', filtered.map(l => l.id).join(','));
+                }
+            } else if (type === 'kegiatan') {
+                const filterLahan = document.getElementById('kFilterLahan')?.value;
+                const filterJenis = document.getElementById('kFilterJenis')?.value;
+                if (filterLahan && filterLahan !== 'all') params.append('lahan', filterLahan);
+                if (filterJenis && filterJenis !== 'all') params.append('jenis', filterJenis);
+            }
+
+            const url = routeMap[type] + (params.toString() ? '?' + params.toString() : '');
+
+            fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken() } })
+                .then(res => {
+                    if (!res.ok) { return res.json().then(err => { throw new Error(err.message || 'Export gagal'); }); }
+                    const disposition = res.headers.get('Content-Disposition') || '';
+                    const match = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                    const filename = match ? match[1].replace(/['"]/g, '') : `export-${type}.xlsx`;
+                    return res.blob().then(blob => ({ blob, filename }));
+                })
+                .then(({ blob, filename }) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = filename;
+                    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    Swal.fire({ icon: 'success', title: 'Excel Berhasil Diunduh!', timer: 2000, showConfirmButton: false });
+                })
+                .catch(err => {
+                    console.error('Export error:', err);
+                    Swal.fire({ icon: 'error', title: 'Export Gagal', text: err.message || 'Terjadi kesalahan saat membuat Excel', confirmButtonColor: '#a1462a' });
+                });
         }
 
         // ================= Backend data: Kegiatan & Produksi =================
@@ -1341,14 +1377,6 @@
             } catch (err) {
                 Swal.fire('Gagal menghapus', err.message, 'error');
             }
-        }
-
-        function exportKegiatanCSV() {
-            const data = loadKegiatan();
-            if (data.length === 0) { Swal.fire('Tidak ada data', 'Belum ada kegiatan untuk diekspor.', 'info'); return; }
-            let csv = 'Tanggal,Lahan,Jenis,Petugas,Tindak Lanjut,Catatan\n';
-            data.forEach(k => { csv += `${k.tanggal},"${(k.lahan_nama||'').replace(/"/g,'""')}",${k.jenis},"${(k.petugas||'').replace(/"/g,'""')}",${k.tindaklanjut||''},"${(k.catatan||'').replace(/"/g,'""')}"\n`; });
-            downloadCsv(csv, `riwayat-kegiatan-${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         // ---------- Produksi ----------
@@ -1738,14 +1766,6 @@
             const a = document.createElement('a');
             a.href = url; a.download = `${filename}.png`;
             document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        }
-
-        function exportProduksiCSV() {
-            const data = loadProduksi();
-            if (data.length === 0) { Swal.fire('Tidak ada data', 'Belum ada data produksi untuk diekspor.', 'info'); return; }
-            let csv = 'Tanggal,Lahan,Komoditas,Jumlah,Satuan,Catatan\n';
-            data.forEach(p => { csv += `${p.tanggal},"${(p.lahan_nama||'').replace(/"/g,'""')}","${p.komoditas}",${p.jumlah},${p.satuan},"${(p.catatan||'').replace(/"/g,'""')}"\n`; });
-            downloadCsv(csv, `riwayat-produksi-${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         // ================= Wiring =================

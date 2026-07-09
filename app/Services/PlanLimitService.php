@@ -67,6 +67,6 @@ class PlanLimitService
 
     public function pdfLimitMessage(): string
     {
-        return 'Kamu sudah mencapai batas cetak PDF hari ini untuk paket Free. Upgrade ke Premium untuk cetak tanpa batas.';
+        return 'Kamu sudah mencapai batas ekspor hari ini untuk paket Free (1x/hari). Upgrade ke Premium untuk ekspor tanpa batas.';
     }
 }
