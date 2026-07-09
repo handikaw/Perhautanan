@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\ForestLand;
-use App\Models\PlanFeature;
 use App\Services\PlanLimitService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +20,8 @@ class ForestLandController extends Controller
     public function index()
     {
         $forestLands = ForestLand::where('user_id', Auth::id())->latest()->get();
-        $planFeatures = PlanFeature::orderBy('sort_order')->get();
 
-        return view('dashboard', compact('forestLands', 'planFeatures'));
+        return view('dashboard', compact('forestLands'));
     }
 
     // 2. Menampilkan Halaman Form Tambah Lahan
