@@ -44,12 +44,13 @@ class ForestLandController extends Controller
 
         $request->validate([
             'nama_lahan'  => 'required|string|max:255',
-            'luas_hektar' => 'required|numeric|min:0.1',
+            'luas_hektar' => 'required|numeric|min:0.1|max:999999999.99',
             'status'      => 'required|in:Konservasi,Produksi,Reboisasi',
         ], [
             'nama_lahan.required'  => 'Nama lahan wajib diisi ya!',
             'luas_hektar.required' => 'Luas hektar tidak boleh kosong.',
             'luas_hektar.numeric'  => 'Luas hektar harus diisi dengan angka.',
+            'luas_hektar.max'      => 'Luas hektar maksimal 999.999.999,99 Ha.',
             'status.required'      => 'Pilih salah satu status lahan.',
         ]);
 
@@ -75,12 +76,13 @@ class ForestLandController extends Controller
     {
         $request->validate([
             'nama_lahan'  => 'required|string|max:255',
-            'luas_hektar' => 'required|numeric|min:0.1',
+            'luas_hektar' => 'required|numeric|min:0.1|max:999999999.99',
             'status'      => 'required|in:Konservasi,Produksi,Reboisasi',
         ], [
             'nama_lahan.required'  => 'Nama lahan wajib diisi ya!',
             'luas_hektar.required' => 'Luas hektar tidak boleh kosong.',
             'luas_hektar.numeric'  => 'Luas hektar harus diisi dengan angka.',
+            'luas_hektar.max'      => 'Luas hektar maksimal 999.999.999,99 Ha.',
             'status.required'      => 'Pilih salah satu status lahan.',
         ]);
 
