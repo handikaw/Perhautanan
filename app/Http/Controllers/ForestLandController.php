@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\ForestLand;
+use App\Services\PlanLimitService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ForestLandController extends Controller
 {
+    protected PlanLimitService $planLimit;
+
+    public function __construct(PlanLimitService $planLimit)
+    {
+        $this->planLimit = $planLimit;
+    }
+
     // 1. Menampilkan Halaman Dashboard Utama dengan Daftar Tabel Lahan
     public function index()
     {
-        // Mengambil data lahan khusus milik user yang sedang login saja (Prinsip SaaS)
         $forestLands = ForestLand::where('user_id', Auth::id())->latest()->get();
-        
-        // Mengirim data ke file resources/views/dashboard.blade.php
+
         return view('dashboard', compact('forestLands'));
     }
 
@@ -24,10 +30,16 @@ class ForestLandController extends Controller
         return view('forest.create');
     }
 
-    // 3. Memproses Data Form dan Disimpan ke MySQL XAMPP
+    // 3. Memproses Data Form dan Disimpan ke MySQL
     public function store(Request $request)
     {
-        // Validasi input ketat sesuai ketentuan UAS
+        // Cek dulu apakah user masih boleh nambah lahan (limit paket Free)
+        if (! $this->planLimit->canAddLahan(Auth::user())) {
+            return redirect()
+                ->route('dashboard')
+                ->with('error', $this->planLimit->lahanLimitMessage());
+        }
+
         $request->validate([
             'nama_lahan'  => 'required|string|max:255',
             'luas_hektar' => 'required|numeric|min:0.1',
@@ -39,15 +51,13 @@ class ForestLandController extends Controller
             'status.required'      => 'Pilih salah satu status lahan.',
         ]);
 
-        // Menyimpan data dengan mengikat user_id yang sedang login aktif
         ForestLand::create([
-            'user_id'       => Auth::id(), 
-            'nama_lahan'    => $request->nama_lahan,
-            'luas_hektar'   => $request->luas_hektar,
-            'status'        => $request->status,
+            'user_id'     => Auth::id(),
+            'nama_lahan'  => $request->nama_lahan,
+            'luas_hektar' => $request->luas_hektar,
+            'status'      => $request->status,
         ]);
 
-        // Kembali ke dashboard dengan pesan sukses
         return redirect()->route('dashboard')->with('success', 'Lahan perhutanan baru berhasil disimpan!');
     }
 

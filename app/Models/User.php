@@ -44,6 +44,23 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_premium' => 'boolean',
+            'premium_activated_at' => 'datetime',
         ];
+    }
+
+    public function forestLands()
+    {
+        return $this->hasMany(ForestLand::class);
+    }
+
+    public function landActivities()
+    {
+        return $this->hasMany(LandActivity::class);
+    }
+
+    public function forestProductions()
+    {
+        return $this->hasMany(ForestProduction::class);
     }
 }
