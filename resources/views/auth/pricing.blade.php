@@ -1,5 +1,27 @@
 {{-- resources/views/pricing.blade.php --}}
-<div class="max-w-4xl mx-auto rounded-xl overflow-hidden border border-gray-200 my-10">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perbandingan Paket - Perhutanan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    @if (session('success'))
+        <div class="max-w-4xl mx-auto mt-6 bg-green-100 text-green-800 text-sm px-4 py-3 rounded-lg">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="max-w-4xl mx-auto mt-6 bg-red-100 text-red-800 text-sm px-4 py-3 rounded-lg">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <div class="max-w-4xl mx-auto rounded-xl overflow-hidden border border-gray-200 my-10 bg-white shadow-sm">
     <table class="w-full border-collapse table-fixed">
         <colgroup>
             <col class="w-[34%]">
@@ -65,4 +87,13 @@
             </div>
         @endif
     @endauth
-</div>
+    </div>
+
+    <div class="max-w-4xl mx-auto text-center pb-10">
+        <a href="{{ route('dashboard') }}" class="text-sm text-gray-500 hover:text-gray-700 underline">
+            &larr; Kembali ke Dashboard
+        </a>
+    </div>
+
+</body>
+</html>
